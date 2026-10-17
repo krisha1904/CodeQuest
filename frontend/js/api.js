@@ -4,7 +4,7 @@
 // Zero fabricated users, zero fake student statistics
 // =====================================================================
 
-const API_BASE_URL = window.CODEQUEST_API_URL || localStorage.getItem("cq_api_url") || "http://localhost:8080/api";
+const API_BASE_URL = window.CODEQUEST_API_URL || localStorage.getItem("cq_api_url") || "https://codequest-cx1l.onrender.com/api";
 
 const CodeQuestAPI = {
   // Check if live backend is online
