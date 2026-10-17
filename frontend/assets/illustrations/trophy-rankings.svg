@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <!-- Cheerful Flat Cartoon Trophy & Rankings -->
+  <defs>
+    <filter id="trophy-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#1E293B" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Confetti and sparkles -->
+  <rect x="25" y="35" width="8" height="8" rx="2" fill="#FB7185" stroke="#1E293B" stroke-width="1.5" transform="rotate(25 29 39)" />
+  <rect x="165" y="45" width="7" height="7" rx="2" fill="#38BDF8" stroke="#1E293B" stroke-width="1.5" transform="rotate(-15 168 48)" />
+  <circle cx="35" cy="115" r="4" fill="#86EFAC" stroke="#1E293B" stroke-width="1.5" />
+  <circle cx="170" cy="120" r="4.5" fill="#FDE68A" stroke="#1E293B" stroke-width="1.5" />
+  <!-- Stars -->
+  <path d="M 45 65 L 48 57 L 51 65 L 59 67 L 51 69 L 48 77 L 45 69 L 37 67 Z" fill="#FDE68A" stroke="#1E293B" stroke-width="1.8" />
+  <path d="M 155 75 L 157 69 L 159 75 L 165 76 L 159 78 L 157 84 L 155 78 L 149 76 Z" fill="#FDE68A" stroke="#1E293B" stroke-width="1.8" />
+
+  <!-- Trophy Handles -->
+  <path d="M 60 70 C 35 70, 35 110, 68 112" fill="none" stroke="#1E293B" stroke-width="6" stroke-linecap="round" />
+  <path d="M 60 70 C 35 70, 35 110, 68 112" fill="none" stroke="#FDE68A" stroke-width="3" stroke-linecap="round" />
+
+  <path d="M 140 70 C 165 70, 165 110, 132 112" fill="none" stroke="#1E293B" stroke-width="6" stroke-linecap="round" />
+  <path d="M 140 70 C 165 70, 165 110, 132 112" fill="none" stroke="#FDE68A" stroke-width="3" stroke-linecap="round" />
+
+  <!-- Trophy Cup Body -->
+  <path d="M 60 50 
+           L 140 50 
+           L 132 110 
+           C 130 135, 115 142, 100 142 
+           C 85 142, 70 135, 68 110 Z" 
+        fill="#FDE68A" 
+        stroke="#1E293B" 
+        stroke-width="3.5" 
+        stroke-linejoin="round"
+        filter="url(#trophy-shadow)" />
+
+  <!-- Trophy Rim Highlight -->
+  <path d="M 65 52 L 135 52" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.8" />
+
+  <!-- Trophy Neck -->
+  <path d="M 92 142 L 108 142 L 106 160 L 94 160 Z" fill="#FDE68A" stroke="#1E293B" stroke-width="3.5" stroke-linejoin="round" />
+
+  <!-- Trophy Base Tier 1 -->
+  <path d="M 80 160 L 120 160 L 122 170 L 78 170 Z" fill="#38BDF8" stroke="#1E293B" stroke-width="3" stroke-linejoin="round" />
+  <!-- Trophy Base Tier 2 (Pedestal) -->
+  <rect x="70" y="170" width="60" height="15" rx="3" fill="#4F46E5" stroke="#1E293B" stroke-width="3" />
+
+  <!-- Star Emblem on Trophy Face -->
+  <path d="M 100 75 L 104 88 L 117 88 L 107 96 L 110 109 L 100 101 L 90 109 L 93 96 L 83 88 L 96 88 Z" fill="#FB7185" stroke="#1E293B" stroke-width="2" stroke-linejoin="round" />
+
+  <!-- Trophy Happy Face inside star or cup -->
+  <circle cx="95" cy="72" r="2.5" fill="#1E293B" />
+  <circle cx="105" cy="72" r="2.5" fill="#1E293B" />
+  <path d="M 97 76 Q 100 79 103 76" fill="none" stroke="#1E293B" stroke-width="1.8" stroke-linecap="round" />
+
+  <!-- Shiny Sparkle -->
+  <path d="M 100 25 L 102 18 L 104 25 L 111 27 L 104 29 L 102 36 L 100 29 L 93 27 Z" fill="#86EFAC" stroke="#1E293B" stroke-width="2" />
+</svg>

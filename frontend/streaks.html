@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Daily Streak - CodeQuest</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Dynamic Navigation Header -->
+  <div id="navbar-placeholder"></div>
+
+  <main class="py-5">
+    <div class="container" style="max-width: 860px;">
+      
+      <!-- Cheerful Flat Cartoon Flame Banner -->
+      <div class="cq-card p-4 p-md-5 mb-4 text-center bg-surface" style="border-top: 6px solid #FB7185;">
+        <div class="mb-3">
+          <img src="assets/illustrations/flame-character.svg" alt="Blaze Flame Mascot" style="width: 140px; height: 140px; filter: drop-shadow(0 8px 16px rgba(251, 113, 133, 0.25));" class="img-fluid">
+        </div>
+        
+        <div class="display-4 fw-extrabold mb-1" style="color: #4F46E5;" id="streak-days-display">0 Days</div>
+        <h3 class="fw-bold text-dark mb-2" id="streak-heading">🔥 My Daily Learning Streak</h3>
+        <p class="text-secondary max-w-600 mx-auto mb-4" id="streak-motivational-msg">
+          Complete at least one Java lesson or pass a topic quiz (≥ 70%) every calendar day to keep your flame glowing.
+        </p>
+
+        <!-- Two Prominent Action Buttons -->
+        <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+          <a href="learn.html" class="btn-cq btn-cq-primary btn-lg px-4 d-inline-flex align-items-center gap-2">
+            <span>📖</span>
+            <span>Continue Learning</span>
+          </a>
+          <a href="leaderboard.html?type=streak" class="btn btn-outline-primary btn-lg rounded-pill px-4 fw-bold d-inline-flex align-items-center gap-2" style="border-width: 2px;">
+            <span>🏆</span>
+            <span>Student Streak Rankings</span>
+          </a>
+        </div>
+
+        <!-- 7-Day Weekly Calendar Strip -->
+        <div class="p-3 bg-light rounded-4 border mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="fw-bold text-muted small text-uppercase">Weekly Activity Calendar</span>
+            <span class="badge bg-primary-light text-primary small" id="timezone-label">Local Timezone</span>
+          </div>
+          <div class="streak-calendar" id="weekly-calendar-cells">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Real Metrics Grid -->
+        <div class="row g-3 justify-content-center">
+          <div class="col-sm-6 col-md-4">
+            <div class="p-3 rounded-4 bg-light border text-center h-100">
+              <div class="text-muted small fw-semibold">Current Streak</div>
+              <div class="fs-3 fw-extrabold text-warning mt-1" id="stat-curr-streak">0 Days</div>
+              <div class="text-muted small" style="font-size: 0.75rem;">Consecutive active days</div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="p-3 rounded-4 bg-light border text-center h-100">
+              <div class="text-muted small fw-semibold">Longest Streak</div>
+              <div class="fs-3 fw-extrabold text-primary mt-1" id="stat-longest-streak">0 Days</div>
+              <div class="text-muted small" style="font-size: 0.75rem;">All-time personal record</div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="p-3 rounded-4 bg-light border text-center h-100">
+              <div class="text-muted small fw-semibold">Today's Goal</div>
+              <div class="fs-3 fw-extrabold text-secondary mt-1" id="stat-today-status">Not Completed</div>
+              <div class="text-muted small" style="font-size: 0.75rem;">1 lesson or quiz needed</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Streak Rules & Guidelines -->
+      <div class="cq-card p-4">
+        <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+          <span>📜</span>
+          <span>CodeQuest Daily Streak Rules</span>
+        </h5>
+        <div class="row g-3 text-secondary small" style="line-height: 1.7;">
+          <div class="col-md-6">
+            <div class="p-3 rounded-3 bg-light border h-100">
+              <strong class="text-dark d-block mb-1">🎯 Qualifying Learning Activities</strong>
+              Only completing a Java lesson or passing a topic quiz with ≥ 70% counts toward your streak. Merely logging in does not count as learning activity.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 rounded-3 bg-light border h-100">
+              <strong class="text-dark d-block mb-1">📅 One Credit Per Calendar Day</strong>
+              Multiple lessons completed on the same day count as 1 streak day. Consistency beats cramming!
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 rounded-3 bg-light border h-100">
+              <strong class="text-dark d-block mb-1">⏰ User Timezone Calculation</strong>
+              Streaks reset according to your configured local timezone (defaults to Asia/Kolkata).
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="p-3 rounded-3 bg-light border h-100">
+              <strong class="text-dark d-block mb-1">🔄 Streak Reset Mechanism</strong>
+              Missing a calendar day drops your active streak back to 0. Resume learning on any day to start a fresh consecutive run.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    Auth.requireAuth();
+
+    async function loadStreakInfo() {
+      try {
+        const user = Auth.getCurrentUser();
+        const data = await CodeQuestAPI.request("/streaks/summary");
+        
+        const currStreak = typeof data.currentStreak === 'number' ? data.currentStreak : 0;
+        const longStreak = typeof data.longestStreak === 'number' ? data.longestStreak : 0;
+
+        document.getElementById("streak-days-display").textContent = `${currStreak} Day${currStreak === 1 ? '' : 's'}`;
+        document.getElementById("stat-curr-streak").textContent = `${currStreak} Day${currStreak === 1 ? '' : 's'}`;
+        document.getElementById("stat-longest-streak").textContent = `${longStreak} Day${longStreak === 1 ? '' : 's'}`;
+        
+        const todayStatusEl = document.getElementById("stat-today-status");
+        if (data.completedToday) {
+          todayStatusEl.textContent = "✓ Completed";
+          todayStatusEl.className = "fs-3 fw-extrabold text-success mt-1";
+          document.getElementById("streak-heading").textContent = "🔥 You're on an Active Streak!";
+        } else {
+          todayStatusEl.textContent = "Not Completed";
+          todayStatusEl.className = "fs-3 fw-extrabold text-secondary mt-1";
+          document.getElementById("streak-heading").textContent = "🔥 Complete Today's Goal!";
+        }
+
+        if (data.motivationalMessage) {
+          document.getElementById("streak-motivational-msg").textContent = data.motivationalMessage;
+        }
+
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Kolkata";
+        document.getElementById("timezone-label").textContent = `Timezone: ${tz}`;
+
+        const calendarBox = document.getElementById("weekly-calendar-cells");
+        calendarBox.innerHTML = "";
+
+        if (data.weeklyCalendar && data.weeklyCalendar.length > 0) {
+          data.weeklyCalendar.forEach(cell => {
+            const div = document.createElement("div");
+            div.className = `streak-day-cell ${cell.completed ? 'completed' : ''} ${cell.isToday ? 'today' : ''}`;
+            div.innerHTML = `
+              <div class="small text-muted mb-1">${cell.dayOfWeek}</div>
+              <div class="fs-5">${cell.completed ? '🔥' : '⚪'}</div>
+              <div class="small fw-semibold mt-1" style="font-size:0.75rem;">${cell.completed ? 'Done' : (cell.isToday ? 'Today' : 'Miss')}</div>
+            `;
+            calendarBox.appendChild(div);
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load streak summary:", err);
+      }
+    }
+
+    loadStreakInfo();
+  </script>
+</body>
+</html>

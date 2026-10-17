@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <!-- Flat Cartoon Quiz Celebration Character -->
+  <defs>
+    <filter id="celeb-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#1E293B" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Confetti Burst -->
+  <rect x="25" y="25" width="6" height="6" rx="1.5" fill="#FB7185" stroke="#1E293B" stroke-width="1.2" transform="rotate(30 28 28)" />
+  <rect x="165" y="25" width="7" height="7" rx="1.5" fill="#38BDF8" stroke="#1E293B" stroke-width="1.2" transform="rotate(-20 168 28)" />
+  <circle cx="35" cy="65" r="3" fill="#86EFAC" stroke="#1E293B" stroke-width="1.2" />
+  <circle cx="165" cy="70" r="3.5" fill="#FDE68A" stroke="#1E293B" stroke-width="1.2" />
+  <path d="M 98 15 L 100 8 L 102 15 L 108 17 L 102 19 L 100 26 L 98 19 L 92 17 Z" fill="#FDE68A" stroke="#1E293B" stroke-width="1.5" />
+
+  <!-- Character Celebrating -->
+  <g transform="translate(45, 45)" filter="url(#celeb-shadow)">
+    <!-- Raised Arms (Cheering) -->
+    <path d="M 15 85 L 0 50" stroke="#1E293B" stroke-width="8" stroke-linecap="round" />
+    <circle cx="0" cy="50" r="6" fill="#FDE68A" stroke="#1E293B" stroke-width="2.5" />
+
+    <path d="M 95 85 L 110 50" stroke="#1E293B" stroke-width="8" stroke-linecap="round" />
+    <circle cx="110" cy="50" r="6" fill="#FDE68A" stroke="#1E293B" stroke-width="2.5" />
+
+    <!-- Body (Mint Green) -->
+    <path d="M 20 80 C 20 70, 30 65, 55 65 C 80 65, 90 70, 90 80 L 95 130 L 15 130 Z" fill="#86EFAC" stroke="#1E293B" stroke-width="3.5" />
+
+    <!-- Head -->
+    <circle cx="55" cy="40" r="30" fill="#FDE68A" stroke="#1E293B" stroke-width="3.5" />
+
+    <!-- Hair -->
+    <path d="M 30 40 C 30 18, 42 12, 55 12 C 72 12, 80 20, 80 40 C 74 32, 65 28, 55 30 C 45 28, 35 32, 30 40 Z" fill="#1E293B" stroke="#1E293B" stroke-width="2.5" />
+
+    <!-- Happy Eyes (Arcs: ^_^) -->
+    <path d="M 44 38 Q 48 32 52 38" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M 58 38 Q 62 32 66 38" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" />
+
+    <!-- Big Cheerful Open Mouth -->
+    <path d="M 49 46 Q 55 58 61 46 Z" fill="#FB7185" stroke="#1E293B" stroke-width="2" stroke-linejoin="round" />
+
+    <!-- Rosy Cheeks -->
+    <ellipse cx="40" cy="44" rx="4" ry="2.5" fill="#FB7185" opacity="0.8" />
+    <ellipse cx="70" cy="44" rx="4" ry="2.5" fill="#FB7185" opacity="0.8" />
+  </g>
+</svg>

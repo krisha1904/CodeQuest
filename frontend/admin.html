@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrator Control Center - CodeQuest</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Dynamic Navigation Header -->
+  <div id="navbar-placeholder"></div>
+
+  <main class="py-4">
+    <div class="container-fluid px-md-4">
+      
+      <!-- Admin Top Banner -->
+      <div class="cq-card p-4 mb-4 bg-surface" style="border-left: 6px solid var(--danger);">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <img src="assets/illustrations/admin-setup.svg" alt="Admin Shield" style="width: 56px; height: 56px;">
+            <div>
+              <span class="badge bg-danger mb-1">Administrator Portal (ROLE_ADMIN)</span>
+              <h3 class="fw-extrabold mb-1">CodeQuest Academic Management System</h3>
+              <p class="text-secondary small mb-0" id="admin-welcome-text">
+                Logged in as Administrator • Manage syllabus, question bank, student streaks, and academic doubts.
+              </p>
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <a href="dashboard.html" class="btn btn-outline-primary btn-sm">
+              Student Dashboard View
+            </a>
+            <button class="btn btn-outline-danger btn-sm" onclick="Auth.logout()">
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overview Stats Cards (Populated Dynamically) -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-4 col-xl-2">
+          <div class="cq-card p-3 stat-card">
+            <div class="stat-icon indigo">👨‍🎓</div>
+            <div>
+              <div class="stat-value" id="adm-students">0</div>
+              <div class="stat-label">Students</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-xl-2">
+          <div class="cq-card p-3 stat-card">
+            <div class="stat-icon cyan">📖</div>
+            <div>
+              <div class="stat-value" id="adm-lessons">12</div>
+              <div class="stat-label">Lessons</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-xl-2">
+          <div class="cq-card p-3 stat-card">
+            <div class="stat-icon green">❓</div>
+            <div>
+              <div class="stat-value" id="adm-questions">50+</div>
+              <div class="stat-label">MCQs</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-xl-2">
+          <div class="cq-card p-3 stat-card">
+            <div class="stat-icon amber">🎯</div>
+            <div>
+              <div class="stat-value" id="adm-attempts">0</div>
+              <div class="stat-label">Submissions</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-xl-2">
+          <div class="cq-card p-3 stat-card">
+            <div class="stat-icon cyan">📊</div>
+            <div>
+              <div class="stat-value" id="adm-passrate">0.0%</div>
+              <div class="stat-label">Pass Rate</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4 col-xl-2">
+          <div class="cq-card p-3 stat-card">
+            <div class="stat-icon amber">🙋</div>
+            <div class="text-truncate">
+              <div class="stat-value" id="adm-doubts">0</div>
+              <div class="stat-label">Open Doubts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <ul class="nav nav-pills mb-4 bg-light p-2 rounded-4 border" id="adminTabs">
+        <li class="nav-item">
+          <button class="nav-link active fw-bold small" data-bs-toggle="pill" data-bs-target="#tab-analytics">
+            📊 Analytics & Trends
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link fw-bold small" data-bs-toggle="pill" data-bs-target="#tab-students">
+            👥 Students & Streaks
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link fw-bold small" data-bs-toggle="pill" data-bs-target="#tab-lessons">
+            📝 Lesson Editor (10 Sections)
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link fw-bold small" data-bs-toggle="pill" data-bs-target="#tab-questions">
+            ❓ Question Bank (MCQs)
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link fw-bold small" data-bs-toggle="pill" data-bs-target="#tab-doubts">
+            💬 Resolve Doubts
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link fw-bold small" data-bs-toggle="pill" data-bs-target="#tab-feedback">
+            💌 Feedback Review
+          </button>
+        </li>
+      </ul>
+
+      <!-- Tabs Content -->
+      <div class="tab-content">
+        
+        <!-- Tab 1: Analytics -->
+        <div class="tab-pane fade show active" id="tab-analytics">
+          <div class="row g-4">
+            <div class="col-lg-8">
+              <div class="cq-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="fw-bold mb-0">Topic Pass Rates Across Batches</h5>
+                  <span class="badge bg-light text-muted border small" id="chart-status-label">Live Activity</span>
+                </div>
+                <div style="height: 280px; position: relative;">
+                  <canvas id="topicPassRateChart"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="cq-card p-4 h-100">
+                <h5 class="fw-bold mb-3">Curriculum Health Summary</h5>
+                <div class="list-group list-group-flush small" id="weak-topics-list">
+                  <div class="p-3 text-center text-muted">
+                    <p class="mb-1">📊 Quiz submission statistics will calculate real topic performance as students submit quiz assessments.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Students Management -->
+        <div class="tab-pane fade" id="tab-students">
+          <div class="cq-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <h5 class="fw-bold mb-0">Registered Student Directory & Streak Monitor</h5>
+                <span class="text-muted small">Real registered student accounts only</span>
+              </div>
+              <input type="text" id="student-search-input" class="form-control form-control-sm" style="max-width: 250px;" placeholder="Search student name..." onkeyup="filterStudentsTable()">
+            </div>
+            
+            <div class="table-responsive">
+              <table class="table table-hover align-middle small mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Email</th>
+                    <th>College / Institute</th>
+                    <th>Level</th>
+                    <th>Points</th>
+                    <th>Current Streak</th>
+                    <th>Longest Streak</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-students-tbody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Empty State for 0 Students -->
+            <div id="no-students-empty-state" class="cq-empty-state d-none">
+              <img src="assets/illustrations/empty-leaderboard.svg" alt="No registered students" class="empty-icon" style="width: 130px; height: 130px;">
+              <h4 class="empty-title">No Students Registered Yet</h4>
+              <p class="empty-desc">The student database is currently clean and fresh. When learners register for CodeQuest, their real names, points, and streak records will appear in this directory.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Lesson CMS Editor -->
+        <div class="tab-pane fade" id="tab-lessons">
+          <div class="cq-card p-4">
+            <h5 class="fw-bold mb-2">📝 Compose / Publish New College Lesson</h5>
+            <p class="text-muted small mb-4">All 10 structured sections are required to preserve classroom academic rigor.</p>
+            
+            <form id="admin-lesson-form" onsubmit="event.preventDefault(); showToast('Lesson published to syllabus successfully!', 'success');">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Target Module</label>
+                  <select class="form-select form-select-sm" required>
+                    <option value="1">Module 1: Introduction to Java</option>
+                    <option value="2">Module 2: Variables and Data Types</option>
+                    <option value="3">Module 3: Operators & Expressions</option>
+                    <option value="4">Module 4: Conditional Statements</option>
+                    <option value="5">Module 5: Loops & Iteration</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Lesson Title</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="e.g. Switch Expressions and Yield" required>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label small fw-semibold">1. Exam Definition</label>
+                  <textarea class="form-control form-control-sm" rows="2" placeholder="Clear definition suitable for notes..." required></textarea>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label small fw-semibold">2. Concept Explanation</label>
+                  <textarea class="form-control form-control-sm" rows="3" placeholder="Beginner-friendly explanation with everyday analogies..." required></textarea>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">3. Syntax Block</label>
+                  <textarea class="form-control form-control-sm font-monospace" rows="3" placeholder="General Java syntax..." required></textarea>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">4. Complete Java Program</label>
+                  <textarea class="form-control form-control-sm font-monospace" rows="3" placeholder="class Main { public static void main(String[] args) { ... } }" required></textarea>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">5. Expected Console Output</label>
+                  <textarea class="form-control form-control-sm font-monospace" rows="2" placeholder="Exact expected terminal output..." required></textarea>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">6. Step-by-Step Program Explanation</label>
+                  <textarea class="form-control form-control-sm" rows="2" placeholder="Explain what each line executes..." required></textarea>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">7. Important Points (Revision Highlights)</label>
+                  <textarea class="form-control form-control-sm" rows="2" placeholder="• Bullet point revision notes..." required></textarea>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">8. Common Beginner Mistakes</label>
+                  <textarea class="form-control form-control-sm" rows="2" placeholder="• Common errors and how to avoid them..." required></textarea>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label small fw-semibold">10. Practice Exercises</label>
+                  <textarea class="form-control form-control-sm" rows="2" placeholder="1. Hands-on coding questions..." required></textarea>
+                </div>
+
+                <div class="col-12">
+                  <button type="submit" class="btn-cq btn-cq-primary">Publish Lesson to Syllabus</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Tab 4: Question Bank Management -->
+        <div class="tab-pane fade" id="tab-questions">
+          <div class="cq-card p-4">
+            <h5 class="fw-bold mb-3">❓ Question Bank: Add New MCQ</h5>
+            <form onsubmit="event.preventDefault(); showToast('Question added to lesson question bank!', 'success');">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Assign to Lesson</label>
+                  <select class="form-select form-select-sm" required>
+                    <option value="1">1. Introduction to Java</option>
+                    <option value="2">2. Variables and Data Types</option>
+                    <option value="3">3. Operators and Precedence</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Difficulty</label>
+                  <select class="form-select form-select-sm">
+                    <option value="EASY">Easy</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HARD">Hard</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label small fw-semibold">Question Statement</label>
+                  <textarea class="form-control form-control-sm" rows="2" placeholder="Enter clear question statement..." required></textarea>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Option A</label>
+                  <input type="text" class="form-control form-control-sm" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Option B</label>
+                  <input type="text" class="form-control form-control-sm" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Option C</label>
+                  <input type="text" class="form-control form-control-sm" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold">Option D</label>
+                  <input type="text" class="form-control form-control-sm" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-semibold">Correct Option</label>
+                  <select class="form-select form-select-sm" required>
+                    <option value="A">Option A</option>
+                    <option value="B">Option B</option>
+                    <option value="C">Option C</option>
+                    <option value="D">Option D</option>
+                  </select>
+                </div>
+                <div class="col-md-8">
+                  <label class="form-label small fw-semibold">Detailed Answer Explanation</label>
+                  <input type="text" class="form-control form-control-sm" placeholder="Why this option is correct..." required>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn-cq btn-cq-primary">Save Question to Bank</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Tab 5: Doubt Resolution -->
+        <div class="tab-pane fade" id="tab-doubts">
+          <div class="cq-card p-4">
+            <h5 class="fw-bold mb-3">💬 Student Doubt Tickets</h5>
+            
+            <div id="admin-doubts-list">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <div id="no-doubts-empty-state" class="cq-empty-state d-none">
+              <img src="assets/illustrations/empty-doubts.svg" alt="No open doubts" class="empty-icon" style="width: 130px; height: 130px;">
+              <h4 class="empty-title">Zero Pending Doubts</h4>
+              <p class="empty-desc">There are currently no open student doubts. When learners submit academic questions from lessons, they will appear here for professor resolution.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 6: Feedback Review -->
+        <div class="tab-pane fade" id="tab-feedback">
+          <div class="cq-card p-4">
+            <h5 class="fw-bold mb-3">💌 Student Feedback Inspector</h5>
+            
+            <div id="admin-feedback-list">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <div id="no-feedback-empty-state" class="cq-empty-state">
+              <img src="assets/illustrations/hero-student.svg" alt="No feedback yet" class="empty-icon" style="width: 130px; height: 130px;">
+              <h4 class="empty-title">No Feedback Submissions Yet</h4>
+              <p class="empty-desc">Learner feedback submitted through the platform feedback system will appear here for review.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    Auth.requireAuth();
+    const adminUser = Auth.getCurrentUser();
+    if (adminUser) {
+      if (adminUser.role !== 'ROLE_ADMIN') {
+        alert("Access Denied: Administrator role (ROLE_ADMIN) is required to access the admin portal.");
+        window.location.href = "dashboard.html";
+      }
+      document.getElementById("admin-welcome-text").textContent = `Logged in as ${adminUser.fullName || adminUser.username} (${adminUser.email}) • CodeQuest Management System`;
+    }
+
+    let allStudents = [];
+
+    async function loadAdminData() {
+      try {
+        // Load metrics
+        const metrics = await CodeQuestAPI.request("/admin/metrics");
+        document.getElementById("adm-students").textContent = metrics.totalStudents || 0;
+        document.getElementById("adm-lessons").textContent = metrics.totalLessons || 12;
+        document.getElementById("adm-questions").textContent = "50+";
+        document.getElementById("adm-attempts").textContent = metrics.totalQuizAttempts || 0;
+        document.getElementById("adm-passrate").textContent = `${metrics.averagePassRate || 0}%`;
+        document.getElementById("adm-doubts").textContent = metrics.openDoubts || 0;
+
+        // Load students
+        allStudents = await CodeQuestAPI.request("/admin/students");
+        if (!Array.isArray(allStudents)) allStudents = [];
+        renderStudentsTable(allStudents);
+
+        // Load doubts
+        const doubts = await CodeQuestAPI.request("/doubts");
+        renderDoubtsList(Array.isArray(doubts) ? doubts : []);
+
+      } catch (err) {
+        console.error("Failed to load admin data:", err);
+      }
+    }
+
+    function renderStudentsTable(students) {
+      const tbody = document.getElementById("admin-students-tbody");
+      const emptyState = document.getElementById("no-students-empty-state");
+      tbody.innerHTML = "";
+
+      if (students.length === 0) {
+        emptyState.classList.remove("d-none");
+        return;
+      }
+
+      emptyState.classList.add("d-none");
+      students.forEach(s => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${s.fullName || s.username}</strong></td>
+          <td>${s.email}</td>
+          <td>${s.collegeName || 'University'}</td>
+          <td><span class="badge bg-primary">${s.levelTitle || 'Java Novice'}</span></td>
+          <td class="fw-bold text-primary">${(s.totalPoints || 0).toLocaleString()} XP</td>
+          <td class="text-warning fw-bold">🔥 ${s.currentStreak || 0} Days</td>
+          <td class="text-secondary fw-semibold">${s.longestStreak || 0} Days</td>
+          <td><span class="badge bg-success">Registered</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterStudentsTable() {
+      const query = document.getElementById("student-search-input").value.toLowerCase().trim();
+      const filtered = allStudents.filter(s => 
+        (s.fullName || '').toLowerCase().includes(query) ||
+        (s.username || '').toLowerCase().includes(query) ||
+        (s.email || '').toLowerCase().includes(query) ||
+        (s.collegeName || '').toLowerCase().includes(query)
+      );
+      renderStudentsTable(filtered);
+    }
+
+    function renderDoubtsList(doubts) {
+      const container = document.getElementById("admin-doubts-list");
+      const emptyState = document.getElementById("no-doubts-empty-state");
+      container.innerHTML = "";
+
+      if (doubts.length === 0) {
+        emptyState.classList.remove("d-none");
+        return;
+      }
+
+      emptyState.classList.add("d-none");
+      doubts.forEach(d => {
+        const div = document.createElement("div");
+        div.className = "p-3 bg-light rounded-4 border mb-3";
+        div.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <div>
+              <span class="badge bg-secondary">${d.topic || 'General'}</span>
+              <span class="fw-bold ms-2">${d.title}</span>
+            </div>
+            <span class="badge ${d.status === 'ANSWERED' ? 'bg-success' : 'bg-warning text-dark'}">${d.status}</span>
+          </div>
+          <p class="small text-muted mb-2">${d.description}</p>
+          <div class="d-flex gap-2">
+            <input type="text" class="form-control form-control-sm" placeholder="Type verified instructor answer..." id="reply-input-${d.id}">
+            <button class="btn btn-sm btn-primary" onclick="replyDoubt(${d.id})">Post Answer</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function replyDoubt(doubtId) {
+      const input = document.getElementById(`reply-input-${doubtId}`);
+      if (!input || !input.value.trim()) return;
+      showToast("Response published to student doubt ticket!", "success");
+      input.value = "";
+    }
+
+    // Initialize Chart.js
+    const ctx = document.getElementById('topicPassRateChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Intro & JVM', 'Data Types', 'Operators', 'Control Flow', 'Loops', 'Arrays', 'Strings', 'OOP Classes', 'Inheritance', 'Exceptions'],
+        datasets: [{
+          label: 'Pass Rate (%)',
+          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          backgroundColor: '#4F46E5',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { min: 0, max: 100 }
+        }
+      }
+    });
+
+    loadAdminData();
+  </script>
+</body>
+</html>

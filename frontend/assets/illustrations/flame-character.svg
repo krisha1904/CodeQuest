@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <!-- Cheerful Flame Character "Blaze" -->
+  <defs>
+    <filter id="soft-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#1E293B" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Background sparkle stars -->
+  <path d="M 35 45 L 38 35 L 41 45 L 51 48 L 41 51 L 38 61 L 35 51 L 25 48 Z" fill="#FDE68A" stroke="#1E293B" stroke-width="2" />
+  <path d="M 165 40 L 167 32 L 169 40 L 177 42 L 169 44 L 167 52 L 165 44 L 157 42 Z" fill="#38BDF8" stroke="#1E293B" stroke-width="2" />
+  <circle cx="170" cy="140" r="4" fill="#FB7185" stroke="#1E293B" stroke-width="1.5" />
+  <circle cx="28" cy="120" r="3" fill="#86EFAC" stroke="#1E293B" stroke-width="1.5" />
+
+  <!-- Outer Flame Body -->
+  <path d="M 100 20 
+           C 115 50, 155 75, 155 120 
+           C 155 155, 130 178, 100 178 
+           C 70 178, 45 155, 45 120 
+           C 45 85, 75 60, 85 45 
+           C 85 65, 95 75, 100 70 
+           C 105 55, 95 35, 100 20 Z" 
+        fill="#FB7185" 
+        stroke="#1E293B" 
+        stroke-width="3.5" 
+        stroke-linejoin="round"
+        filter="url(#soft-shadow)" />
+
+  <!-- Mid Flame Layer (Soft Yellow) -->
+  <path d="M 100 55 
+           C 112 75, 140 95, 140 128 
+           C 140 152, 122 168, 100 168 
+           C 78 168, 60 152, 60 128 
+           C 60 102, 85 82, 92 70 
+           C 92 82, 98 88, 102 85 
+           C 105 75, 98 62, 100 55 Z" 
+        fill="#FDE68A" 
+        stroke="#1E293B" 
+        stroke-width="3" 
+        stroke-linejoin="round" />
+
+  <!-- Inner Flame Core (Sky Blue Spark) -->
+  <path d="M 100 100 
+           C 108 112, 122 125, 122 142 
+           C 122 156, 112 163, 100 163 
+           C 88 163, 78 156, 78 142 
+           C 78 126, 92 115, 96 108 
+           C 96 114, 100 117, 102 115 
+           C 104 110, 99 104, 100 100 Z" 
+        fill="#38BDF8" 
+        stroke="#1E293B" 
+        stroke-width="2.5" 
+        stroke-linejoin="round" />
+
+  <!-- Friendly Cartoon Eyes -->
+  <ellipse cx="88" cy="115" rx="5" ry="7" fill="#1E293B" />
+  <circle cx="86.5" cy="113" r="2" fill="#FFFFFF" />
+
+  <ellipse cx="112" cy="115" rx="5" ry="7" fill="#1E293B" />
+  <circle cx="110.5" cy="113" r="2" fill="#FFFFFF" />
+
+  <!-- Rosy Blush Cheeks -->
+  <ellipse cx="78" cy="124" rx="5" ry="3" fill="#FB7185" opacity="0.8" />
+  <ellipse cx="122" cy="124" rx="5" ry="3" fill="#FB7185" opacity="0.8" />
+
+  <!-- Cheerful Smile -->
+  <path d="M 94 125 Q 100 133 106 125" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Little Golden Crown / Star -->
+  <path d="M 94 28 L 100 18 L 106 28 L 100 25 Z" fill="#FDE68A" stroke="#1E293B" stroke-width="2" stroke-linejoin="round" />
+</svg>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Java Lesson - CodeQuest</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Dynamic Navigation Header -->
+  <div id="navbar-placeholder"></div>
+
+  <div class="container-fluid py-4 px-md-4">
+    <div class="row g-4">
+      
+      <!-- Left Sidebar: Course Navigation (Desktop) -->
+      <aside class="col-lg-3 col-xl-3">
+        <div class="cq-card p-3 position-sticky" style="top: 80px; max-height: calc(100vh - 100px); overflow-y: auto;">
+          <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+            <h6 class="fw-bold mb-0">Course Outline</h6>
+            <a href="learn.html" class="small text-muted">All Modules</a>
+          </div>
+
+          <div id="sidebar-lessons-list" class="list-group list-group-flush small">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Area: 10 Required College Sections -->
+      <main class="col-lg-9 col-xl-9">
+        <div class="cq-card p-4 p-md-5 bg-surface mb-4">
+          
+          <!-- Lesson Header Banner -->
+          <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3 mb-4 gap-2">
+            <div>
+              <span class="badge bg-primary-light text-primary fw-semibold mb-1" id="lesson-module-tag">Module 1</span>
+              <h2 class="fw-extrabold mb-1" id="lesson-title">Lesson Title</h2>
+              <div class="text-muted small">
+                ⏱️ Estimated Study Time: <span id="lesson-time">15</span> mins • University Exam Syllabus
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <button id="mark-completed-btn" class="btn btn-outline-success btn-sm fw-semibold" onclick="markLessonDone()">
+                ✓ Mark Completed
+              </button>
+              <a id="start-quiz-top-btn" href="#" class="btn-cq btn-cq-primary btn-sm">
+                🎯 Start Topic Quiz
+              </a>
+            </div>
+          </div>
+
+          <!-- Section 1: Definition -->
+          <section class="mb-4">
+            <span class="section-badge def">1. Definition</span>
+            <div class="p-3 rounded-3 bg-light border-start border-4 border-primary">
+              <p class="fs-6 mb-0 text-dark fw-medium" id="sec-definition"></p>
+            </div>
+          </section>
+
+          <!-- Section 2: Concept Explanation -->
+          <section class="mb-4">
+            <span class="section-badge concept">2. Concept Explanation</span>
+            <div class="text-secondary" id="sec-concept" style="white-space: pre-line; line-height: 1.75;"></div>
+          </section>
+
+          <!-- Section 3: Syntax -->
+          <section class="mb-4">
+            <span class="section-badge syntax">3. Syntax</span>
+            <div class="code-container">
+              <div class="code-header">
+                <span>General Java Syntax</span>
+                <span>Language: Java</span>
+              </div>
+              <pre class="code-block"><code id="sec-syntax"></code></pre>
+            </div>
+          </section>
+
+          <!-- Section 4: Java Program -->
+          <section class="mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="section-badge program">4. Java Program</span>
+              <button class="copy-btn" onclick="copyProgramCode()">📋 Copy Code</button>
+            </div>
+            <div class="code-container mt-1">
+              <div class="code-header">
+                <span>Main.java (College Standard Format)</span>
+                <span>JDK 17+ / 21</span>
+              </div>
+              <pre class="code-block"><code id="sec-program"></code></pre>
+            </div>
+          </section>
+
+          <!-- Section 5: Output -->
+          <section class="mb-4">
+            <span class="section-badge output">5. Expected Output</span>
+            <div class="terminal-output">
+              <div class="terminal-header">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+                <span>Standard Terminal Output</span>
+              </div>
+              <div class="terminal-body" id="sec-output"></div>
+            </div>
+          </section>
+
+          <!-- Section 6: Explanation of the Program -->
+          <section class="mb-4">
+            <span class="section-badge concept">6. Step-by-Step Program Explanation</span>
+            <div class="p-3 bg-light rounded-3 text-secondary" id="sec-explanation" style="white-space: pre-line; line-height: 1.75;"></div>
+          </section>
+
+          <!-- Section 7: Important Points -->
+          <section class="mb-4">
+            <span class="section-badge points">7. Important Points (Revision Notes)</span>
+            <div class="callout-box tip mb-0" id="sec-points" style="white-space: pre-line;"></div>
+          </section>
+
+          <!-- Section 8: Common Mistakes -->
+          <section class="mb-4">
+            <span class="section-badge mistakes">8. Common Beginner Mistakes</span>
+            <div class="callout-box warning mb-0" id="sec-mistakes" style="white-space: pre-line;"></div>
+          </section>
+
+          <!-- Section 9: Multiple-Choice Questions -->
+          <section class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="section-badge points">9. Multiple-Choice Questions</span>
+              <a id="full-quiz-link" href="#" class="btn btn-sm btn-outline-primary fw-bold">Open Full Quiz →</a>
+            </div>
+            <div class="p-3 border rounded-3 bg-light">
+              <p class="small text-muted mb-2">Test your comprehension with 5 exam-focused multiple-choice questions.</p>
+              <div class="d-flex align-items-center gap-3">
+                <span class="badge bg-success">5 Questions</span>
+                <span class="badge bg-primary">70% Pass Mark</span>
+                <span class="badge bg-warning text-dark">+50 XP</span>
+                <a id="start-quiz-btn" href="#" class="btn-cq btn-cq-primary btn-sm ms-auto">Attempt Quiz Now</a>
+              </div>
+            </div>
+          </section>
+
+          <!-- Section 10: Practice Questions -->
+          <section class="mb-5">
+            <span class="section-badge practice">10. Practice Exercises</span>
+            <div class="p-3 border rounded-3 bg-surface" id="sec-practice" style="white-space: pre-line;"></div>
+          </section>
+
+          <!-- Lesson Navigation Footer -->
+          <div class="d-flex justify-content-between align-items-center pt-4 border-top">
+            <button id="prev-lesson-btn" class="btn-cq btn-cq-secondary" onclick="navigateLesson(-1)">
+              ← Previous Lesson
+            </button>
+            <a id="quiz-bottom-cta" href="#" class="btn-cq btn-cq-primary">
+              🎯 Attempt Lesson Quiz →
+            </a>
+            <button id="next-lesson-btn" class="btn-cq btn-cq-secondary" onclick="navigateLesson(1)">
+              Next Lesson →
+            </button>
+          </div>
+
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Get lesson ID from URL parameter (e.g. lesson.html?id=2)
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentId = parseInt(urlParams.get("id")) || 1;
+
+    let lesson = CODEQUEST_DATA.lessons.find(l => l.id === currentId) || CODEQUEST_DATA.lessons[0];
+
+    // Populate Sidebar
+    const sidebarList = document.getElementById("sidebar-lessons-list");
+    CODEQUEST_DATA.lessons.forEach(l => {
+      const a = document.createElement("a");
+      a.href = `lesson.html?id=${l.id}`;
+      a.className = `list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2 ${l.id === currentId ? 'active fw-bold' : ''}`;
+      a.innerHTML = `
+        <span class="text-truncate" style="max-width: 180px;">${l.id}. ${l.title}</span>
+        <span class="badge ${l.isCompleted ? 'bg-success' : 'bg-secondary'} rounded-pill" style="font-size:0.65rem;">
+          ${l.isCompleted ? '✓' : '•'}
+        </span>
+      `;
+      sidebarList.appendChild(a);
+    });
+
+    // Populate Content
+    document.getElementById("lesson-module-tag").textContent = lesson.moduleTitle;
+    document.getElementById("lesson-title").textContent = lesson.title;
+    document.getElementById("lesson-time").textContent = lesson.estimatedMinutes;
+    document.getElementById("sec-definition").textContent = lesson.definition;
+    document.getElementById("sec-concept").textContent = lesson.conceptExplanation;
+    document.getElementById("sec-syntax").textContent = lesson.syntaxBlock;
+    document.getElementById("sec-program").textContent = lesson.javaProgram;
+    document.getElementById("sec-output").textContent = lesson.programOutput;
+    document.getElementById("sec-explanation").textContent = lesson.programExplanation;
+    document.getElementById("sec-points").textContent = lesson.importantPoints;
+    document.getElementById("sec-mistakes").textContent = lesson.commonMistakes;
+    document.getElementById("sec-practice").textContent = lesson.practiceQuestions;
+
+    const quizUrl = `quiz.html?lessonId=${lesson.id}`;
+    document.getElementById("start-quiz-top-btn").href = quizUrl;
+    document.getElementById("start-quiz-btn").href = quizUrl;
+    document.getElementById("full-quiz-link").href = quizUrl;
+    document.getElementById("quiz-bottom-cta").href = quizUrl;
+
+    // Previous & Next navigation buttons
+    const prevBtn = document.getElementById("prev-lesson-btn");
+    const nextBtn = document.getElementById("next-lesson-btn");
+    if (currentId <= 1) prevBtn.disabled = true;
+    if (currentId >= CODEQUEST_DATA.lessons.length) nextBtn.disabled = true;
+
+    function navigateLesson(dir) {
+      const targetId = currentId + dir;
+      if (targetId >= 1 && targetId <= CODEQUEST_DATA.lessons.length) {
+        window.location.href = `lesson.html?id=${targetId}`;
+      }
+    }
+
+    function copyProgramCode() {
+      navigator.clipboard.writeText(lesson.javaProgram);
+      showToast("Java program copied to clipboard!", "success");
+    }
+
+    async function markLessonDone() {
+      try {
+        await CodeQuestAPI.request(`/lessons/${currentId}/complete`, { method: "POST" });
+        lesson.isCompleted = true;
+        document.getElementById("mark-completed-btn").innerHTML = "✓ Completed";
+        document.getElementById("mark-completed-btn").className = "btn btn-success btn-sm fw-semibold";
+        showToast("Lesson completed! Daily streak & XP updated.", "success");
+      } catch (e) {
+        lesson.isCompleted = true;
+        document.getElementById("mark-completed-btn").innerHTML = "✓ Completed";
+        document.getElementById("mark-completed-btn").className = "btn btn-success btn-sm fw-semibold";
+        showToast("Lesson marked as completed!", "success");
+      }
+    }
+  </script>
+</body>
+</html>

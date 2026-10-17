@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Profile & Achievements - CodeQuest</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Dynamic Navigation Header -->
+  <div id="navbar-placeholder"></div>
+
+  <main class="py-4">
+    <div class="container" style="max-width: 960px;">
+      
+      <!-- Profile Header Card -->
+      <div class="cq-card p-4 p-md-5 mb-4 bg-surface">
+        <div class="row align-items-center g-4">
+          <div class="col-md-3 text-center">
+            <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center display-4 fw-extrabold shadow" style="width: 100px; height: 100px;" id="profile-avatar">
+              S
+            </div>
+            <div class="mt-2">
+              <span class="badge bg-primary px-3 py-1" id="profile-level-badge">Java Novice</span>
+            </div>
+          </div>
+          <div class="col-md-9 text-center text-md-start">
+            <h2 class="fw-extrabold mb-1" id="profile-full-name">Learner Profile</h2>
+            <div class="text-muted small mb-3">
+              <span id="profile-username">@student</span> • 
+              <span id="profile-college">College / University</span> • 
+              <span id="profile-joined">Active Learner</span>
+            </div>
+
+            <div class="row g-2 text-center">
+              <div class="col-4 col-sm-3">
+                <div class="p-2 bg-light rounded-4 border">
+                  <div class="fs-5 fw-extrabold text-primary" id="prof-points">0</div>
+                  <div class="text-muted" style="font-size:0.75rem;">Total XP</div>
+                </div>
+              </div>
+              <div class="col-4 col-sm-3">
+                <div class="p-2 bg-light rounded-4 border">
+                  <div class="fs-5 fw-extrabold text-warning" id="prof-streak">🔥 0d</div>
+                  <div class="text-muted" style="font-size:0.75rem;">Active Streak</div>
+                </div>
+              </div>
+              <div class="col-4 col-sm-3">
+                <div class="p-2 bg-light rounded-4 border">
+                  <div class="fs-5 fw-extrabold text-secondary" id="prof-longest">0d</div>
+                  <div class="text-muted" style="font-size:0.75rem;">Best Streak</div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-3">
+                <div class="p-2 bg-light rounded-4 border">
+                  <div class="fs-5 fw-extrabold text-success" id="prof-lessons-done">0 / 10</div>
+                  <div class="text-muted" style="font-size:0.75rem;">Lessons Done</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badges Showcase Section -->
+      <div class="cq-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h5 class="fw-bold mb-1">🏅 Academic Badges & Achievements</h5>
+            <p class="text-muted small mb-0">Milestones unlocked by consistent learning and quiz excellence</p>
+          </div>
+          <span class="badge bg-warning text-dark px-3 py-2 fw-bold" id="badges-unlocked-count">0 / 8 Badges Unlocked</span>
+        </div>
+
+        <div id="badges-empty-banner" class="p-3 bg-light rounded-4 border mb-4 d-none">
+          <div class="d-flex align-items-center gap-3">
+            <img src="assets/illustrations/empty-badges.svg" alt="Badges locked" style="width: 60px; height: 60px;">
+            <div>
+              <strong class="text-dark d-block">Your achievements will appear here as you progress.</strong>
+              <span class="text-muted small">Complete your first lesson, maintain consecutive-day streaks, or score 100% on a quiz to unlock your first verified badge!</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3" id="badges-grid-container">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Account Settings Card -->
+      <div class="cq-card p-4">
+        <h5 class="fw-bold mb-3">⚙️ Account Settings</h5>
+        <form id="settings-form" onsubmit="event.preventDefault(); saveProfileSettings();">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Display Full Name</label>
+              <input type="text" class="form-control" id="settings-name" placeholder="Your full name" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">College / Department</label>
+              <input type="text" class="form-control" id="settings-college" placeholder="Your college or institute">
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn-cq btn-cq-primary btn-sm">Save Profile Changes</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    Auth.requireAuth();
+    const user = Auth.getCurrentUser() || {};
+
+    const fullName = user.fullName || user.username || "Student";
+    document.getElementById("profile-full-name").textContent = fullName;
+    document.getElementById("profile-avatar").textContent = fullName.charAt(0).toUpperCase();
+    document.getElementById("profile-username").textContent = `@${user.username || 'student'}`;
+    document.getElementById("profile-college").textContent = user.collegeName || "Engineering College";
+    document.getElementById("profile-level-badge").textContent = user.levelTitle || "Java Novice";
+    
+    const currStreak = typeof user.currentStreak === 'number' ? user.currentStreak : 0;
+    const longStreak = typeof user.longestStreak === 'number' ? user.longestStreak : 0;
+    const totalXP = typeof user.totalPoints === 'number' ? user.totalPoints : 0;
+
+    document.getElementById("prof-points").textContent = totalXP.toLocaleString();
+    document.getElementById("prof-streak").textContent = `🔥 ${currStreak}d`;
+    document.getElementById("prof-longest").textContent = `${longStreak}d`;
+
+    // Calculate completed lessons
+    const completedLessons = CODEQUEST_DATA.lessons.filter(l => l.isCompleted).length;
+    document.getElementById("prof-lessons-done").textContent = `${completedLessons} / ${CODEQUEST_DATA.lessons.length}`;
+
+    document.getElementById("settings-name").value = user.fullName || "";
+    document.getElementById("settings-college").value = user.collegeName || "";
+
+    // Render Badges
+    const badgeGrid = document.getElementById("badges-grid-container");
+    const unlockedCount = CODEQUEST_DATA.badges.filter(b => b.unlocked).length;
+    document.getElementById("badges-unlocked-count").textContent = `${unlockedCount} / ${CODEQUEST_DATA.badges.length} Badges Unlocked`;
+
+    if (unlockedCount === 0) {
+      document.getElementById("badges-empty-banner").classList.remove("d-none");
+    }
+
+    CODEQUEST_DATA.badges.forEach(b => {
+      const col = document.createElement("div");
+      col.className = "col-6 col-sm-4 col-md-3";
+      col.innerHTML = `
+        <div class="badge-item ${b.unlocked ? '' : 'locked'} h-100 p-3 text-center border rounded-4 bg-light">
+          <div class="fs-2 mb-2">
+            ${b.code === 'FIRST_STEP' ? '🎖️' : b.code === 'QUIZ_STARTER' ? '✅' : b.code === 'PERFECT_SCORE' ? '⭐' : b.code === 'THREE_DAY_STREAK' ? '🔥' : b.code === 'SEVEN_DAY_STREAK' ? '⚡' : b.code === 'CHALLENGE_CHAMPION' ? '🏆' : '📘'}
+          </div>
+          <h6 class="fw-bold mb-1 small">${b.title}</h6>
+          <p class="text-muted mb-2" style="font-size:0.75rem;">${b.description}</p>
+          <span class="badge ${b.unlocked ? 'bg-success-light text-success' : 'bg-light text-muted border'} small mt-auto">
+            ${b.unlocked ? `Unlocked (${b.unlockedAt})` : 'Locked (+ ' + b.xpBonus + ' XP)'}
+          </span>
+        </div>
+      `;
+      badgeGrid.appendChild(col);
+    });
+
+    function saveProfileSettings() {
+      const newName = document.getElementById("settings-name").value.trim();
+      const newCollege = document.getElementById("settings-college").value.trim();
+
+      user.fullName = newName;
+      user.collegeName = newCollege;
+      localStorage.setItem("cq_current_user", JSON.stringify(user));
+
+      // Update in registered accounts
+      const accounts = JSON.parse(localStorage.getItem("cq_registered_accounts") || "[]");
+      const idx = accounts.findIndex(a => a.id === user.id);
+      if (idx !== -1) {
+        accounts[idx].fullName = newName;
+        accounts[idx].collegeName = newCollege;
+        localStorage.setItem("cq_registered_accounts", JSON.stringify(accounts));
+      }
+
+      showToast("Account profile updated successfully!", "success");
+      setTimeout(() => location.reload(), 600);
+    }
+  </script>
+</body>
+</html>

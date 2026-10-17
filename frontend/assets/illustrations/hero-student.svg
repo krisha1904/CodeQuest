@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="100%" height="100%">
+  <!-- Friendly Cartoon College Student Learning Java on Laptop -->
+  <defs>
+    <filter id="hero-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#4F46E5" flood-opacity="0.1" />
+    </filter>
+  </defs>
+
+  <!-- Background decorative floating shapes & code elements -->
+  <!-- Floating Java Curly Braces -->
+  <g transform="translate(60, 80)">
+    <rect x="-5" y="-5" width="54" height="54" rx="14" fill="#EEF2FF" stroke="#4F46E5" stroke-width="2.5" />
+    <text x="22" y="32" font-family="'Fira Code', monospace" font-size="28" font-weight="bold" fill="#4F46E5" text-anchor="middle">{ }</text>
+  </g>
+
+  <!-- Floating Java Coffee Cup -->
+  <g transform="translate(390, 75)">
+    <circle cx="20" cy="20" r="30" fill="#FEF3C7" stroke="#FDE68A" stroke-width="2" />
+    <!-- Mug Body -->
+    <rect x="8" y="10" width="24" height="22" rx="4" fill="#FB7185" stroke="#1E293B" stroke-width="2.5" />
+    <!-- Handle -->
+    <path d="M 32 14 C 40 14, 40 26, 32 26" fill="none" stroke="#1E293B" stroke-width="2.5" />
+    <!-- Steam -->
+    <path d="M 14 6 Q 16 2 14 -2" fill="none" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" />
+    <path d="M 22 5 Q 24 0 22 -3" fill="none" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" />
+  </g>
+
+  <!-- Floating javac terminal badge -->
+  <g transform="translate(50, 240)">
+    <rect x="0" y="0" width="85" height="36" rx="10" fill="#1E293B" stroke="#38BDF8" stroke-width="2" />
+    <text x="10" y="23" font-family="'Fira Code', monospace" font-size="13" font-weight="bold" fill="#86EFAC">$ javac</text>
+  </g>
+
+  <!-- Floating Achievement Star Badge -->
+  <g transform="translate(400, 240)">
+    <rect x="0" y="0" width="70" height="34" rx="17" fill="#86EFAC" stroke="#1E293B" stroke-width="2.5" />
+    <text x="14" y="22" font-size="15">🔥 10d</text>
+  </g>
+
+  <!-- Sparkles & Stars -->
+  <path d="M 170 45 L 173 35 L 176 45 L 186 48 L 176 51 L 173 61 L 170 51 L 160 48 Z" fill="#FDE68A" stroke="#1E293B" stroke-width="2" />
+  <path d="M 320 50 L 322 42 L 324 50 L 332 52 L 324 54 L 322 62 L 320 54 L 312 52 Z" fill="#38BDF8" stroke="#1E293B" stroke-width="2" />
+  <circle cx="100" cy="180" r="5" fill="#FB7185" stroke="#1E293B" stroke-width="2" />
+  <circle cx="380" cy="180" r="5" fill="#86EFAC" stroke="#1E293B" stroke-width="2" />
+  <circle cx="340" cy="320" r="4" fill="#FDE68A" stroke="#1E293B" stroke-width="2" />
+
+  <!-- Study Desk Surface -->
+  <rect x="60" y="330" width="380" height="16" rx="8" fill="#F8FAFC" stroke="#1E293B" stroke-width="3.5" />
+
+  <!-- Book stack on the left desk -->
+  <g transform="translate(90, 280)">
+    <!-- Book 1 (Coral) -->
+    <rect x="0" y="32" width="65" height="18" rx="4" fill="#FB7185" stroke="#1E293B" stroke-width="2.5" />
+    <line x1="12" y1="32" x2="12" y2="50" stroke="#1E293B" stroke-width="2" />
+    <!-- Book 2 (Indigo) -->
+    <rect x="6" y="16" width="55" height="16" rx="3" fill="#4F46E5" stroke="#1E293B" stroke-width="2.5" />
+    <line x1="16" y1="16" x2="16" y2="32" stroke="#FFFFFF" stroke-width="2" />
+    <!-- Book 3 (Sky Blue - Java Core) -->
+    <rect x="12" y="2" width="45" height="14" rx="3" fill="#38BDF8" stroke="#1E293B" stroke-width="2.5" />
+    <text x="24" y="12" font-family="sans-serif" font-size="8" font-weight="bold" fill="#1E293B">JAVA</text>
+  </g>
+
+  <!-- Main Student Character -->
+  <g id="character" transform="translate(160, 90)" filter="url(#hero-shadow)">
+    <!-- Body / Hoodie (Indigo) -->
+    <path d="M 45 155 
+             C 45 140, 60 135, 90 135 
+             C 120 135, 135 140, 135 155 
+             L 145 235 
+             L 35 235 Z" 
+          fill="#4F46E5" 
+          stroke="#1E293B" 
+          stroke-width="3.5" 
+          stroke-linejoin="round" />
+
+    <!-- Hoodie Pocket -->
+    <rect x="65" y="195" width="50" height="25" rx="6" fill="#4338CA" stroke="#1E293B" stroke-width="2.5" />
+
+    <!-- Collar / Neck -->
+    <rect x="78" y="120" width="24" height="20" rx="4" fill="#FDE68A" stroke="#1E293B" stroke-width="2.5" />
+
+    <!-- Student Head -->
+    <circle cx="90" cy="85" r="42" fill="#FDE68A" stroke="#1E293B" stroke-width="3.5" />
+
+    <!-- Hair (Clean modern geometric hair) -->
+    <path d="M 48 85 
+             C 48 48, 62 42, 90 42 
+             C 120 42, 132 50, 132 80 
+             C 128 72, 120 68, 110 70 
+             C 98 72, 92 64, 75 66 
+             C 62 68, 55 76, 48 85 Z" 
+          fill="#1E293B" 
+          stroke="#1E293B" 
+          stroke-width="3" 
+          stroke-linejoin="round" />
+
+    <!-- Stylish Glasses -->
+    <rect x="62" y="76" width="22" height="18" rx="6" fill="#FFFFFF" fill-opacity="0.8" stroke="#1E293B" stroke-width="3" />
+    <rect x="96" y="76" width="22" height="18" rx="6" fill="#FFFFFF" fill-opacity="0.8" stroke="#1E293B" stroke-width="3" />
+    <line x1="84" y1="85" x2="96" y2="85" stroke="#1E293B" stroke-width="3" />
+    <line x1="50" y1="83" x2="62" y2="83" stroke="#1E293B" stroke-width="2.5" />
+    <line x1="118" y1="83" x2="130" y2="83" stroke="#1E293B" stroke-width="2.5" />
+
+    <!-- Friendly Eyes behind glasses -->
+    <circle cx="73" cy="85" r="3.5" fill="#1E293B" />
+    <circle cx="72" cy="83.5" r="1.2" fill="#FFFFFF" />
+
+    <circle cx="107" cy="85" r="3.5" fill="#1E293B" />
+    <circle cx="106" cy="83.5" r="1.2" fill="#FFFFFF" />
+
+    <!-- Rosy Blush Cheeks -->
+    <ellipse cx="60" cy="95" rx="5" ry="3" fill="#FB7185" opacity="0.8" />
+    <ellipse cx="120" cy="95" rx="5" ry="3" fill="#FB7185" opacity="0.8" />
+
+    <!-- Happy Smile -->
+    <path d="M 83 98 Q 90 106 97 98" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" />
+
+    <!-- Cute Headphones (Mint Green) -->
+    <path d="M 46 85 C 46 45, 134 45, 134 85" fill="none" stroke="#86EFAC" stroke-width="6" stroke-linecap="round" />
+    <rect x="42" y="74" width="9" height="24" rx="4" fill="#86EFAC" stroke="#1E293B" stroke-width="2.5" />
+    <rect x="129" y="74" width="9" height="24" rx="4" fill="#86EFAC" stroke="#1E293B" stroke-width="2.5" />
+
+    <!-- Student Arms (Typing on laptop) -->
+    <!-- Left Arm -->
+    <path d="M 50 160 L 68 205 L 95 210" fill="none" stroke="#4F46E5" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 50 160 L 68 205 L 95 210" fill="none" stroke="#1E293B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="95" cy="210" r="6" fill="#FDE68A" stroke="#1E293B" stroke-width="2" />
+
+    <!-- Right Arm -->
+    <path d="M 130 160 L 112 205 L 85 210" fill="none" stroke="#4F46E5" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M 130 160 L 112 205 L 85 210" fill="none" stroke="#1E293B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="85" cy="210" r="6" fill="#FDE68A" stroke="#1E293B" stroke-width="2" />
+  </g>
+
+  <!-- Laptop on the Desk -->
+  <g transform="translate(205, 275)">
+    <!-- Laptop Screen -->
+    <path d="M 12 0 L 78 0 L 84 45 L 6 45 Z" fill="#38BDF8" stroke="#1E293B" stroke-width="3" stroke-linejoin="round" />
+    <!-- Code on Screen -->
+    <line x1="16" y1="12" x2="42" y2="12" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="22" y1="20" x2="68" y2="20" stroke="#FDE68A" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="22" y1="28" x2="52" y2="28" stroke="#86EFAC" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="16" y1="36" x2="32" y2="36" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" />
+    <!-- Laptop Base / Keyboard -->
+    <rect x="0" y="45" width="90" height="10" rx="3" fill="#E2E8F0" stroke="#1E293B" stroke-width="3" />
+    <!-- Trackpad -->
+    <rect x="36" y="47" width="18" height="6" rx="1.5" fill="#CBD5E1" />
+  </g>
+</svg>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ask a Doubt & Discussions - CodeQuest</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Dynamic Navigation Header -->
+  <div id="navbar-placeholder"></div>
+
+  <main class="py-4">
+    <div class="container" style="max-width: 920px;">
+      
+      <!-- Doubts Header Banner -->
+      <div class="cq-card p-4 p-md-5 mb-4 bg-surface" style="border-left: 6px solid var(--primary);">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <div>
+            <span class="badge bg-primary-light text-primary mb-2">Academic Support</span>
+            <h2 class="fw-extrabold mb-1">Ask a Java Doubt 🙋</h2>
+            <p class="text-secondary mb-0">
+              Submit your programming questions, compiler errors, or theory doubts. Receive structured explanations from professors and mentors.
+            </p>
+          </div>
+          <div>
+            <button class="btn-cq btn-cq-primary" data-bs-toggle="modal" data-bs-target="#askDoubtModal">
+              + Post New Doubt
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doubts Threads Feed -->
+      <div id="doubts-container">
+        <!-- Injected dynamically -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Post Doubt Modal -->
+  <div class="modal fade" id="askDoubtModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content cq-card p-3 border-0">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="fw-bold modal-title">🙋 Submit Academic Doubt</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="post-doubt-form">
+            <div class="mb-3">
+              <label for="doubtTopic" class="form-label small fw-semibold">Java Topic / Module</label>
+              <select class="form-select" id="doubtTopic" required>
+                <option value="Variables and Data Types">Variables and Data Types</option>
+                <option value="Operators & Precedence">Operators & Expressions</option>
+                <option value="Conditional Statements">Conditional Statements</option>
+                <option value="Loops & Iteration">Loops & Iteration</option>
+                <option value="Arrays">Arrays & Matrices</option>
+                <option value="Strings">Strings & Text Handling</option>
+                <option value="OOP: Classes & Objects">Classes and Objects</option>
+                <option value="OOP: Inheritance & Polymorphism">Inheritance & Polymorphism</option>
+                <option value="Exception Handling">Exception Handling</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="doubtTitle" class="form-label small fw-semibold">Doubt Title / Subject</label>
+              <input type="text" class="form-control" id="doubtTitle" placeholder="e.g. Why does float f = 3.14 cause lossy conversion?" required>
+            </div>
+            <div class="mb-3">
+              <label for="doubtDesc" class="form-label small fw-semibold">Detailed Description / Error Message</label>
+              <textarea class="form-control" id="doubtDesc" rows="4" placeholder="Paste your code snippet, exact javac compiler message, or question details..." required></textarea>
+            </div>
+            <button type="submit" class="btn-cq btn-cq-primary w-100">Submit Question Ticket</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    Auth.requireAuth();
+
+    async function loadDoubts() {
+      try {
+        let doubts = await CodeQuestAPI.request("/doubts");
+        if (!Array.isArray(doubts)) doubts = [];
+
+        const container = document.getElementById("doubts-container");
+        container.innerHTML = "";
+
+        if (doubts.length === 0) {
+          container.innerHTML = `
+            <div class="cq-empty-state">
+              <img src="assets/illustrations/empty-doubts.svg" alt="Ask a question" class="empty-icon" style="width: 140px; height: 140px;">
+              <h4 class="empty-title">Got Java Questions? We've Got Answers!</h4>
+              <p class="empty-desc">Never stay stuck on compiler errors, syntax rules, or tricky OOP logic. Submit a doubt ticket anytime and receive verified faculty explanations.</p>
+              <button class="btn-cq btn-cq-primary" data-bs-toggle="modal" data-bs-target="#askDoubtModal">+ Submit First Doubt</button>
+            </div>
+          `;
+          return;
+        }
+
+        doubts.forEach(d => {
+          const card = document.createElement("div");
+          card.className = "cq-card p-4 mb-3 border";
+          card.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div>
+                <span class="badge bg-secondary mb-1">${d.topic || 'Java'}</span>
+                <span class="text-muted small ms-2">${d.createdAt || 'Recently'}</span>
+              </div>
+              <span class="badge ${d.status === 'ANSWERED' ? 'bg-success' : d.status === 'UNDER_REVIEW' ? 'bg-warning text-dark' : 'bg-primary'} small">
+                ${d.status || 'SUBMITTED'}
+              </span>
+            </div>
+
+            <h5 class="fw-bold mb-2">${d.title}</h5>
+            <p class="text-secondary small mb-3" style="line-height:1.6;">${d.description}</p>
+
+            ${d.replies && d.replies.length > 0 ? `
+              <div class="border-top pt-3 mt-3">
+                <h6 class="fw-bold small text-muted text-uppercase mb-2">Professor / Instructor Resolution:</h6>
+                ${d.replies.map(r => `
+                  <div class="p-3 rounded-3 bg-light border-start border-4 border-success mb-2">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                      <strong class="text-success small">${r.authorName || 'Instructor'}</strong>
+                      <span class="text-muted small" style="font-size:0.75rem;">${r.createdAt || 'Recently'}</span>
+                    </div>
+                    <p class="text-dark small mb-0" style="line-height:1.6;">${r.replyText}</p>
+                  </div>
+                `).join('')}
+              </div>
+            ` : `
+              <div class="p-2 bg-light rounded text-muted small text-center">
+                ⏳ Ticket is currently under review by instructors. Verified answers appear here.
+              </div>
+            `}
+          `;
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Failed to load doubts:", err);
+      }
+    }
+
+    document.getElementById("post-doubt-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const topic = document.getElementById("doubtTopic").value;
+      const title = document.getElementById("doubtTitle").value.trim();
+      const desc = document.getElementById("doubtDesc").value.trim();
+
+      const newDoubt = {
+        id: Date.now(),
+        topic,
+        title,
+        description: desc,
+        status: "UNDER_REVIEW",
+        createdAt: "Just now",
+        replies: []
+      };
+
+      const localDoubts = JSON.parse(localStorage.getItem("cq_doubts") || "[]");
+      localDoubts.unshift(newDoubt);
+      localStorage.setItem("cq_doubts", JSON.stringify(localDoubts));
+
+      const modalEl = document.getElementById("askDoubtModal");
+      const modal = bootstrap.Modal.getInstance(modalEl);
+      if (modal) modal.hide();
+
+      showToast("Your doubt ticket was submitted successfully! An instructor will respond soon.", "success");
+      loadDoubts();
+    });
+
+    loadDoubts();
+  </script>
+</body>
+</html>

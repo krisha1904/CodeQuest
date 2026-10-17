@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="100%" height="100%">
+  <!-- Flat Cartoon Mystery Badge / Achievements Empty State -->
+  <defs>
+    <filter id="badge-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#1E293B" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Sparkles -->
+  <path d="M 35 35 L 37 28 L 39 35 L 46 36 L 39 38 L 37 45 L 35 38 L 28 36 Z" fill="#FDE68A" stroke="#1E293B" stroke-width="1.5" />
+  <path d="M 205 45 L 207 38 L 209 45 L 216 46 L 209 48 L 207 55 L 205 48 L 198 46 Z" fill="#86EFAC" stroke="#1E293B" stroke-width="1.5" />
+  <circle cx="45" cy="115" r="3.5" fill="#38BDF8" stroke="#1E293B" stroke-width="1.5" />
+  <circle cx="195" cy="110" r="3.5" fill="#FB7185" stroke="#1E293B" stroke-width="1.5" />
+
+  <!-- Badge Ribbons (Indigo & Coral) -->
+  <path d="M 95 105 L 80 165 L 105 150 L 115 165 Z" fill="#4F46E5" stroke="#1E293B" stroke-width="3" stroke-linejoin="round" />
+  <path d="M 145 105 L 160 165 L 135 150 L 125 165 Z" fill="#FB7185" stroke="#1E293B" stroke-width="3" stroke-linejoin="round" />
+
+  <!-- Outer Medal Rosette -->
+  <circle cx="120" cy="90" r="50" fill="#FDE68A" stroke="#1E293B" stroke-width="3.5" filter="url(#badge-shadow)" />
+  <circle cx="120" cy="90" r="40" fill="#FFFFFF" stroke="#1E293B" stroke-width="2.5" />
+
+  <!-- Central Star Motif -->
+  <path d="M 120 62 L 125 78 L 142 78 L 128 88 L 133 104 L 120 94 L 107 104 L 112 88 L 98 78 L 115 78 Z" 
+        fill="#38BDF8" stroke="#1E293B" stroke-width="2.5" stroke-linejoin="round" />
+
+  <!-- Cute Face in Star -->
+  <circle cx="116" cy="85" r="2.2" fill="#1E293B" />
+  <circle cx="124" cy="85" r="2.2" fill="#1E293B" />
+  <path d="M 118 89 Q 120 92 122 89" fill="none" stroke="#1E293B" stroke-width="1.5" stroke-linecap="round" />
+
+  <!-- Sparkling Key / Lock -->
+  <g transform="translate(170, 110)">
+    <circle cx="10" cy="10" r="8" fill="#FDE68A" stroke="#1E293B" stroke-width="2" />
+    <circle cx="10" cy="10" r="3" fill="#FFFFFF" stroke="#1E293B" stroke-width="1.5" />
+    <line x1="18" y1="10" x2="32" y2="10" stroke="#1E293B" stroke-width="3" stroke-linecap="round" />
+    <line x1="28" y1="10" x2="28" y2="15" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="32" y1="10" x2="32" y2="14" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" />
+  </g>
+</svg>

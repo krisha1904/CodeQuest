@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 200" width="100%" height="100%">
+  <!-- Cheerful Flat Cartoon Empty Leaderboard Illustration -->
+  <defs>
+    <filter id="empty-podium-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#1E293B" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Sparkles -->
+  <path d="M 45 40 L 47 34 L 49 40 L 55 41 L 49 43 L 47 49 L 45 43 L 39 41 Z" fill="#FDE68A" stroke="#1E293B" stroke-width="1.5" />
+  <path d="M 235 50 L 237 44 L 239 50 L 245 51 L 239 53 L 237 59 L 235 53 L 229 51 Z" fill="#38BDF8" stroke="#1E293B" stroke-width="1.5" />
+  <circle cx="50" cy="110" r="3.5" fill="#FB7185" stroke="#1E293B" stroke-width="1.5" />
+  <circle cx="230" cy="115" r="3.5" fill="#86EFAC" stroke="#1E293B" stroke-width="1.5" />
+
+  <!-- Empty Podium Blocks -->
+  <!-- 2nd Place Podium (Left) -->
+  <rect x="50" y="125" width="55" height="55" rx="8" fill="#E2E8F0" stroke="#1E293B" stroke-width="3" filter="url(#empty-podium-shadow)" />
+  <text x="77" y="158" font-family="'Inter', sans-serif" font-size="22" font-weight="900" fill="#94A3B8" text-anchor="middle">2</text>
+
+  <!-- 3rd Place Podium (Right) -->
+  <rect x="175" y="135" width="55" height="45" rx="8" fill="#F1F5F9" stroke="#1E293B" stroke-width="3" filter="url(#empty-podium-shadow)" />
+  <text x="202" y="165" font-family="'Inter', sans-serif" font-size="20" font-weight="900" fill="#CBD5E1" text-anchor="middle">3</text>
+
+  <!-- 1st Place Podium (Center - Gold) -->
+  <rect x="110" y="105" width="60" height="75" rx="8" fill="#FDE68A" stroke="#1E293B" stroke-width="3.5" filter="url(#empty-podium-shadow)" />
+  <text x="140" y="150" font-family="'Inter', sans-serif" font-size="26" font-weight="900" fill="#4F46E5" text-anchor="middle">1</text>
+
+  <!-- Cute Friendly Flame Mascot on 1st Place Podium -->
+  <g transform="translate(116, 32)">
+    <!-- Flame Mascot Body -->
+    <path d="M 24 5 C 32 15, 46 25, 46 45 C 46 60, 36 68, 24 68 C 12 68, 2 60, 2 45 C 2 30, 16 20, 20 12 C 20 18, 22 22, 24 20 C 26 15, 23 9, 24 5 Z" 
+          fill="#FB7185" stroke="#1E293B" stroke-width="2.5" stroke-linejoin="round" />
+    <path d="M 24 20 C 28 26, 36 34, 36 48 C 36 57, 30 63, 24 63 C 18 63, 12 57, 12 48 C 12 38, 20 30, 22 26 Z" 
+          fill="#FDE68A" stroke="#1E293B" stroke-width="2" stroke-linejoin="round" />
+
+    <!-- Cute Eyes -->
+    <circle cx="19" cy="44" r="2.5" fill="#1E293B" />
+    <circle cx="29" cy="44" r="2.5" fill="#1E293B" />
+    <!-- Cheerful Smile -->
+    <path d="M 21 49 Q 24 53 27 49" fill="none" stroke="#1E293B" stroke-width="1.8" stroke-linecap="round" />
+
+    <!-- Waving Hand with Flag -->
+    <path d="M 38 46 L 48 36" stroke="#1E293B" stroke-width="2" stroke-linecap="round" />
+    <!-- Flagpole & Flag -->
+    <line x1="48" y1="20" x2="48" y2="44" stroke="#1E293B" stroke-width="2.5" />
+    <path d="M 48 20 L 64 26 L 48 32 Z" fill="#38BDF8" stroke="#1E293B" stroke-width="2" stroke-linejoin="round" />
+  </g>
+</svg>

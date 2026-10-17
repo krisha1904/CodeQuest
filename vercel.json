@@ -1,0 +1,13 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/((?!backend|database|tools).*)",
+      "destination": "/frontend/$1"
+    }
+  ]
+}
