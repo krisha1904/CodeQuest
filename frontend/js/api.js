@@ -36,7 +36,7 @@ const CodeQuestAPI = {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
         headers,
-        signal: AbortSignal.timeout(3500)
+        signal: AbortSignal.timeout(15000)
       });
       if (!response.ok) {
         let errMessage = `HTTP error ${response.status}`;
