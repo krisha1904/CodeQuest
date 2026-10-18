@@ -1,5 +1,6 @@
 package com.codequest.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -17,6 +18,7 @@ public class User {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false, length = 255)
     private String passwordHash;
 
@@ -44,6 +46,11 @@ public class User {
 
     @Column(length = 50)
     private String timezone = "Asia/Kolkata";
+
+    private LocalDateTime lastLoginAt;
+
+    @Column(nullable = false)
+    private int loginCount = 0;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -110,6 +117,14 @@ public class User {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getLastLoginAt() { return lastLoginAt; }
+    public void setLastLoginAt(LocalDateTime lastLoginAt) { this.lastLoginAt = lastLoginAt; }
+
+    public int getLoginCount() { return loginCount; }
+    public void setLoginCount(int loginCount) { this.loginCount = loginCount; }
+
+    public void incrementLoginCount() { this.loginCount++; }
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }

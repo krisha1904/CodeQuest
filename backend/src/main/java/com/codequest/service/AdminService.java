@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -34,9 +37,13 @@ public class AdminService {
     @Autowired
     private CourseModuleRepository courseModuleRepository;
 
+    @Autowired
+    private StudentActivityRepository studentActivityRepository;
+
     @Transactional(readOnly = true)
     public AdminDto.MetricsResponse getPlatformMetrics() {
         long totalStudents = userRepository.countByRole(Role.ROLE_STUDENT);
+        long totalUsers = userRepository.count();
         long totalLessons = lessonRepository.count();
         long totalQuestions = questionRepository.count();
         long totalQuizAttempts = quizAttemptRepository.count();
@@ -45,6 +52,10 @@ public class AdminService {
         long openDoubts = doubtRepository.countByStatus("OPEN");
         long openFeedback = feedbackRepository.countByStatus("NEW");
 
+        long totalLogins = studentActivityRepository.countByActivityType("USER_LOGIN");
+        LocalDateTime startOfToday = LocalDate.now().atStartOfDay();
+        long activeUsersToday = studentActivityRepository.countByActivityTypeAndCreatedAtAfter("USER_LOGIN", startOfToday);
+
         return new AdminDto.MetricsResponse(
                 totalStudents,
                 totalLessons,
@@ -52,7 +63,10 @@ public class AdminService {
                 totalQuizAttempts,
                 averagePassRate,
                 openDoubts,
-                openFeedback
+                openFeedback,
+                totalUsers,
+                totalLogins,
+                activeUsersToday
         );
     }
 
@@ -103,5 +117,48 @@ public class AdminService {
     @Transactional(readOnly = true)
     public List<User> getAllStudents() {
         return userRepository.findByRole(Role.ROLE_STUDENT);
+    }
+
+    @Transactional(readOnly = true)
+    public List<AdminDto.UserDetailResponse> getAllUsers() {
+        return userRepository.findAll().stream().map(u -> new AdminDto.UserDetailResponse(
+                u.getId(),
+                u.getUsername(),
+                u.getEmail(),
+                u.getFullName(),
+                u.getCollegeName(),
+                u.getRole().name(),
+                u.getTotalPoints(),
+                u.getCurrentStreak(),
+                u.getLongestStreak(),
+                u.getLevelTitle(),
+                u.getCreatedAt(),
+                u.getLastLoginAt(),
+                u.getLoginCount()
+        )).sorted((a, b) -> {
+            if (a.getLastLoginAt() != null && b.getLastLoginAt() != null) {
+                return b.getLastLoginAt().compareTo(a.getLastLoginAt());
+            }
+            if (a.getLastLoginAt() != null) return -1;
+            if (b.getLastLoginAt() != null) return 1;
+            return b.getCreatedAt().compareTo(a.getCreatedAt());
+        }).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<AdminDto.LoginActivityResponse> getRecentLogins() {
+        List<StudentActivity> activities = studentActivityRepository.findTop100ByActivityTypeOrderByCreatedAtDesc("USER_LOGIN");
+        return activities.stream().map(a -> new AdminDto.LoginActivityResponse(
+                a.getId(),
+                a.getUser() != null ? a.getUser().getId() : null,
+                a.getUser() != null ? a.getUser().getUsername() : "Unknown",
+                a.getUser() != null ? a.getUser().getEmail() : "",
+                a.getUser() != null ? a.getUser().getFullName() : "",
+                a.getUser() != null ? a.getUser().getCollegeName() : "",
+                a.getUser() != null && a.getUser().getRole() != null ? a.getUser().getRole().name() : "ROLE_STUDENT",
+                a.getActivityType(),
+                a.getDescription(),
+                a.getCreatedAt()
+        )).collect(Collectors.toList());
     }
 }

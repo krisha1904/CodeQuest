@@ -41,6 +41,9 @@ public class CodeQuestWorkflowTest {
     @Autowired
     private LessonService lessonService;
 
+    @Autowired
+    private com.codequest.service.AdminService adminService;
+
     @Test
     @Order(1)
     void testZeroPreExistingUsersOnStart() {
@@ -153,5 +156,33 @@ public class CodeQuestWorkflowTest {
         assertEquals(1, students.size(), "Only registered student must appear in student streak rankings");
         assertEquals("arjun_mehta", students.get(0).getUsername());
         assertFalse(students.stream().anyMatch(u -> u.getRole() == Role.ROLE_ADMIN), "Admin must never appear in student streak rankings");
+    }
+
+    @Test
+    @Order(7)
+    void testLoginTrackingAndAdminMetrics() {
+        // Log in as student
+        AuthDto.AuthResponse loginResp = authService.login(new AuthDto.LoginRequest("arjun_mehta", "SecurePass123!"));
+        assertNotNull(loginResp);
+        assertEquals("arjun_mehta", loginResp.getUsername());
+
+        // Verify user tracking fields
+        User student = userRepository.findByUsername("arjun_mehta").orElseThrow();
+        assertNotNull(student.getLastLoginAt(), "lastLoginAt must be populated on login");
+        assertTrue(student.getLoginCount() >= 2, "loginCount must increment on login");
+
+        // Verify admin audit stream
+        List<com.codequest.dto.AdminDto.LoginActivityResponse> logins = adminService.getRecentLogins();
+        assertFalse(logins.isEmpty(), "Recent logins list must not be empty");
+        assertTrue(logins.stream().anyMatch(l -> "arjun_mehta".equals(l.getUsername())), "Must track student login event");
+
+        // Verify admin all-users list
+        List<com.codequest.dto.AdminDto.UserDetailResponse> allUsers = adminService.getAllUsers();
+        assertTrue(allUsers.size() >= 2, "All users must include student and admin");
+
+        // Verify admin metrics
+        com.codequest.dto.AdminDto.MetricsResponse metrics = adminService.getPlatformMetrics();
+        assertTrue(metrics.getTotalLogins() >= 1, "Metrics must include total logins");
+        assertTrue(metrics.getTotalUsers() >= 2, "Metrics must include total users");
     }
 }

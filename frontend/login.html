@@ -66,7 +66,7 @@
 
             <div class="text-center mt-3 pt-3 border-top">
               <p class="small text-muted mb-2">Don't have an account yet? <a href="register.html" class="fw-bold">Sign Up Free</a></p>
-              <p class="small text-muted mb-0">First-time instructor? <a href="admin-setup.html" class="fw-semibold text-secondary">Setup Administrator Account →</a></p>
+              <p class="small text-muted mb-1">Instructor / Admin setup: <a href="admin-setup.html" class="fw-semibold text-primary">Setup or Recover Admin Account →</a></p>
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@
           }
         }, 500);
       } else {
-        alertBox.textContent = res.message || "Invalid username or password.";
+        alertBox.innerHTML = `<div>${res.message || "Invalid username or password."}</div><div class="mt-1 small"><a href="admin-setup.html" class="alert-link text-decoration-underline">Admin locked out? Use Admin Setup & Recovery →</a></div>`;
         alertBox.classList.remove("d-none");
       }
     });

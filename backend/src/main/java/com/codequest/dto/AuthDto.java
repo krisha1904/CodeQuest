@@ -73,6 +73,31 @@ public class AuthDto {
         public void setCollegeName(String collegeName) { this.collegeName = collegeName; }
     }
 
+    public static class AdminResetRequest {
+        private String setupToken;
+        private String username;
+        private String newPassword;
+        private String email;
+        private String fullName;
+
+        public AdminResetRequest() {}
+
+        public String getSetupToken() { return setupToken; }
+        public void setSetupToken(String setupToken) { this.setupToken = setupToken; }
+
+        public String getUsername() { return username; }
+        public void setUsername(String username) { this.username = username; }
+
+        public String getNewPassword() { return newPassword; }
+        public void setNewPassword(String newPassword) { this.newPassword = newPassword; }
+
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+
+        public String getFullName() { return fullName; }
+        public void setFullName(String fullName) { this.fullName = fullName; }
+    }
+
     public static class AuthResponse {
         private String token;
         private Long id;

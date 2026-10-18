@@ -104,6 +104,33 @@ const Auth = {
     }
   },
 
+  async resetAdmin(setupToken, username, newPassword, email, fullName) {
+    try {
+      const data = await CodeQuestAPI.request("/auth/admin-reset", {
+        method: "POST",
+        body: JSON.stringify({ setupToken, username, newPassword, email, fullName })
+      });
+
+      localStorage.setItem("cq_token", data.token);
+      localStorage.setItem("cq_current_user", JSON.stringify({
+        id: data.id,
+        username: data.username,
+        email: data.email,
+        fullName: data.fullName,
+        collegeName: data.collegeName || "CodeQuest Administration",
+        role: "ROLE_ADMIN",
+        currentStreak: 0,
+        longestStreak: 0,
+        totalPoints: 0,
+        levelTitle: "CodeQuest Administrator"
+      }));
+
+      return { success: true, user: data };
+    } catch (err) {
+      return { success: false, message: err.message || "Administrator recovery failed. Please check your setup token." };
+    }
+  },
+
   logout() {
     localStorage.removeItem("cq_token");
     localStorage.removeItem("cq_current_user");

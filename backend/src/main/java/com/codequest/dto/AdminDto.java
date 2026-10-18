@@ -10,8 +10,15 @@ public class AdminDto {
         private double averagePassRate;
         private long openDoubts;
         private long openFeedback;
+        private long totalUsers;
+        private long totalLogins;
+        private long activeUsersToday;
 
         public MetricsResponse(long totalStudents, long totalLessons, long totalQuestions, long totalQuizAttempts, double averagePassRate, long openDoubts, long openFeedback) {
+            this(totalStudents, totalLessons, totalQuestions, totalQuizAttempts, averagePassRate, openDoubts, openFeedback, totalStudents, 0, 0);
+        }
+
+        public MetricsResponse(long totalStudents, long totalLessons, long totalQuestions, long totalQuizAttempts, double averagePassRate, long openDoubts, long openFeedback, long totalUsers, long totalLogins, long activeUsersToday) {
             this.totalStudents = totalStudents;
             this.totalLessons = totalLessons;
             this.totalQuestions = totalQuestions;
@@ -19,6 +26,9 @@ public class AdminDto {
             this.averagePassRate = averagePassRate;
             this.openDoubts = openDoubts;
             this.openFeedback = openFeedback;
+            this.totalUsers = totalUsers;
+            this.totalLogins = totalLogins;
+            this.activeUsersToday = activeUsersToday;
         }
 
         public long getTotalStudents() { return totalStudents; }
@@ -28,6 +38,119 @@ public class AdminDto {
         public double getAveragePassRate() { return averagePassRate; }
         public long getOpenDoubts() { return openDoubts; }
         public long getOpenFeedback() { return openFeedback; }
+        public long getTotalUsers() { return totalUsers; }
+        public long getTotalLogins() { return totalLogins; }
+        public long getActiveUsersToday() { return activeUsersToday; }
+    }
+
+    public static class UserDetailResponse {
+        private Long id;
+        private String username;
+        private String email;
+        private String fullName;
+        private String collegeName;
+        private String role;
+        private int totalPoints;
+        private int currentStreak;
+        private int longestStreak;
+        private String levelTitle;
+        private java.time.LocalDateTime createdAt;
+        private java.time.LocalDateTime lastLoginAt;
+        private int loginCount;
+
+        public UserDetailResponse() {}
+
+        public UserDetailResponse(Long id, String username, String email, String fullName, String collegeName, String role, int totalPoints, int currentStreak, int longestStreak, String levelTitle, java.time.LocalDateTime createdAt, java.time.LocalDateTime lastLoginAt, int loginCount) {
+            this.id = id;
+            this.username = username;
+            this.email = email;
+            this.fullName = fullName;
+            this.collegeName = collegeName;
+            this.role = role;
+            this.totalPoints = totalPoints;
+            this.currentStreak = currentStreak;
+            this.longestStreak = longestStreak;
+            this.levelTitle = levelTitle;
+            this.createdAt = createdAt;
+            this.lastLoginAt = lastLoginAt;
+            this.loginCount = loginCount;
+        }
+
+        public Long getId() { return id; }
+        public void setId(Long id) { this.id = id; }
+        public String getUsername() { return username; }
+        public void setUsername(String username) { this.username = username; }
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+        public String getFullName() { return fullName; }
+        public void setFullName(String fullName) { this.fullName = fullName; }
+        public String getCollegeName() { return collegeName; }
+        public void setCollegeName(String collegeName) { this.collegeName = collegeName; }
+        public String getRole() { return role; }
+        public void setRole(String role) { this.role = role; }
+        public int getTotalPoints() { return totalPoints; }
+        public void setTotalPoints(int totalPoints) { this.totalPoints = totalPoints; }
+        public int getCurrentStreak() { return currentStreak; }
+        public void setCurrentStreak(int currentStreak) { this.currentStreak = currentStreak; }
+        public int getLongestStreak() { return longestStreak; }
+        public void setLongestStreak(int longestStreak) { this.longestStreak = longestStreak; }
+        public String getLevelTitle() { return levelTitle; }
+        public void setLevelTitle(String levelTitle) { this.levelTitle = levelTitle; }
+        public java.time.LocalDateTime getCreatedAt() { return createdAt; }
+        public void setCreatedAt(java.time.LocalDateTime createdAt) { this.createdAt = createdAt; }
+        public java.time.LocalDateTime getLastLoginAt() { return lastLoginAt; }
+        public void setLastLoginAt(java.time.LocalDateTime lastLoginAt) { this.lastLoginAt = lastLoginAt; }
+        public int getLoginCount() { return loginCount; }
+        public void setLoginCount(int loginCount) { this.loginCount = loginCount; }
+    }
+
+    public static class LoginActivityResponse {
+        private Long id;
+        private Long userId;
+        private String username;
+        private String email;
+        private String fullName;
+        private String collegeName;
+        private String role;
+        private String activityType;
+        private String description;
+        private java.time.LocalDateTime timestamp;
+
+        public LoginActivityResponse() {}
+
+        public LoginActivityResponse(Long id, Long userId, String username, String email, String fullName, String collegeName, String role, String activityType, String description, java.time.LocalDateTime timestamp) {
+            this.id = id;
+            this.userId = userId;
+            this.username = username;
+            this.email = email;
+            this.fullName = fullName;
+            this.collegeName = collegeName;
+            this.role = role;
+            this.activityType = activityType;
+            this.description = description;
+            this.timestamp = timestamp;
+        }
+
+        public Long getId() { return id; }
+        public void setId(Long id) { this.id = id; }
+        public Long getUserId() { return userId; }
+        public void setUserId(Long userId) { this.userId = userId; }
+        public String getUsername() { return username; }
+        public void setUsername(String username) { this.username = username; }
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+        public String getFullName() { return fullName; }
+        public void setFullName(String fullName) { this.fullName = fullName; }
+        public String getCollegeName() { return collegeName; }
+        public void setCollegeName(String collegeName) { this.collegeName = collegeName; }
+        public String getRole() { return role; }
+        public void setRole(String role) { this.role = role; }
+        public String getActivityType() { return activityType; }
+        public void setActivityType(String activityType) { this.activityType = activityType; }
+        public String getDescription() { return description; }
+        public void setDescription(String description) { this.description = description; }
+        public java.time.LocalDateTime getTimestamp() { return timestamp; }
+        public void setTimestamp(java.time.LocalDateTime timestamp) { this.timestamp = timestamp; }
     }
 
     public static class LessonSaveRequest {

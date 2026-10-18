@@ -32,14 +32,21 @@ public class AuthController {
     @GetMapping("/admin-setup/status")
     public ResponseEntity<?> getAdminSetupStatus() {
         boolean available = adminSetupService.isSetupAvailable();
+        boolean resetAvailable = adminSetupService.isResetAvailable();
         return ResponseEntity.ok(Map.of(
             "setupAvailable", available,
-            "message", available ? "Administrator setup is available." : "Administrator account already exists. Setup is locked."
+            "resetAvailable", resetAvailable,
+            "message", available ? "Administrator setup is available." : "Administrator account exists. Use admin recovery if locked out."
         ));
     }
 
     @PostMapping("/admin-setup")
     public ResponseEntity<AuthDto.AuthResponse> setupAdmin(@RequestBody AuthDto.AdminSetupRequest request) {
         return ResponseEntity.ok(authService.setupFirstAdmin(request));
+    }
+
+    @PostMapping("/admin-reset")
+    public ResponseEntity<AuthDto.AuthResponse> resetAdmin(@RequestBody AuthDto.AdminResetRequest request) {
+        return ResponseEntity.ok(authService.resetAdmin(request));
     }
 }

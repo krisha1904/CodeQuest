@@ -70,7 +70,57 @@ const CodeQuestAPI = {
       const hasAdmin = registeredUsers.some(u => u.role === "ROLE_ADMIN");
       return {
         setupAvailable: !hasAdmin,
-        message: !hasAdmin ? "Administrator setup is available." : "Administrator account already exists. Setup is locked."
+        resetAvailable: true,
+        message: !hasAdmin ? "Administrator setup is available." : "Administrator account exists. Use recovery if locked out."
+      };
+    }
+
+    // Admin password reset / recovery
+    if (endpoint === "/auth/admin-reset") {
+      const body = JSON.parse(options.body || "{}");
+      const token = (body.setupToken || "").trim();
+      if (!token) throw new Error("Setup/Recovery token is required.");
+      if (!body.newPassword || body.newPassword.length < 6) throw new Error("Password must be at least 6 characters.");
+
+      const username = (body.username || "Krisha_1904").trim();
+      let admin = registeredUsers.find(u => u.username.toLowerCase() === username.toLowerCase() || u.role === "ROLE_ADMIN");
+      if (!admin) {
+        admin = {
+          id: Date.now(),
+          username: username,
+          email: body.email || (username.toLowerCase() + "@codequest.com"),
+          fullName: body.fullName || "Administrator (" + username + ")",
+          collegeName: "CodeQuest Administration",
+          role: "ROLE_ADMIN",
+          currentStreak: 0,
+          longestStreak: 0,
+          totalPoints: 0,
+          levelTitle: "CodeQuest Administrator",
+          createdAt: new Date().toISOString()
+        };
+        registeredUsers.push(admin);
+      }
+      admin.username = username;
+      admin.password = body.newPassword;
+      admin.role = "ROLE_ADMIN";
+      admin.lastLoginAt = new Date().toISOString();
+      admin.loginCount = (admin.loginCount || 0) + 1;
+      localStorage.setItem("cq_registered_accounts", JSON.stringify(registeredUsers));
+
+      this.logLocalActivity(admin, "ADMIN_RESET", "Admin account '" + username + "' password reset successfully");
+
+      return {
+        token: "local-jwt-admin-" + admin.id,
+        id: admin.id,
+        username: admin.username,
+        email: admin.email,
+        fullName: admin.fullName,
+        collegeName: admin.collegeName,
+        role: admin.role,
+        currentStreak: 0,
+        longestStreak: 0,
+        totalPoints: 0,
+        levelTitle: admin.levelTitle
       };
     }
 
@@ -190,6 +240,11 @@ const CodeQuestAPI = {
         throw new Error("Invalid username or password.");
       }
 
+      found.lastLoginAt = new Date().toISOString();
+      found.loginCount = (found.loginCount || 0) + 1;
+      localStorage.setItem("cq_registered_accounts", JSON.stringify(registeredUsers));
+      this.logLocalActivity(found, "USER_LOGIN", `User '${found.username}' (${found.role === 'ROLE_ADMIN' ? 'Administrator' : 'Student'}) logged in from web client`);
+
       return {
         token: "local-jwt-" + found.id,
         id: found.id,
@@ -201,7 +256,9 @@ const CodeQuestAPI = {
         currentStreak: found.currentStreak || 0,
         longestStreak: found.longestStreak || 0,
         totalPoints: found.totalPoints || 0,
-        levelTitle: found.levelTitle || "Java Novice"
+        levelTitle: found.levelTitle || "Java Novice",
+        lastLoginAt: found.lastLoginAt,
+        loginCount: found.loginCount
       };
     }
 
@@ -389,20 +446,50 @@ const CodeQuestAPI = {
     if (endpoint === "/admin/students") {
       return registeredUsers.filter(u => u.role === "ROLE_STUDENT");
     }
+    if (endpoint === "/admin/users") {
+      return registeredUsers;
+    }
+    if (endpoint === "/admin/logins") {
+      return JSON.parse(localStorage.getItem("cq_login_activities") || "[]");
+    }
     if (endpoint === "/admin/metrics") {
       const students = registeredUsers.filter(u => u.role === "ROLE_STUDENT");
+      const logins = JSON.parse(localStorage.getItem("cq_login_activities") || "[]");
+      const today = new Date().toISOString().split("T")[0];
+      const activeToday = logins.filter(l => (l.timestamp || "").startsWith(today)).length;
       return {
         totalStudents: students.length,
+        totalUsers: registeredUsers.length,
         totalLessons: CODEQUEST_DATA.lessons.length,
         totalQuestions: 10,
         totalQuizAttempts: 0,
         averagePassRate: 0.0,
         openDoubts: 0,
-        openFeedback: 0
+        openFeedback: 0,
+        totalLogins: logins.length,
+        activeUsersToday: activeToday
       };
     }
 
     return { success: true };
+  },
+
+  logLocalActivity(user, type, desc) {
+    const activities = JSON.parse(localStorage.getItem("cq_login_activities") || "[]");
+    activities.unshift({
+      id: Date.now(),
+      userId: user.id,
+      username: user.username,
+      email: user.email,
+      fullName: user.fullName,
+      collegeName: user.collegeName,
+      role: user.role,
+      activityType: type,
+      description: desc,
+      timestamp: new Date().toISOString()
+    });
+    if (activities.length > 100) activities.length = 100;
+    localStorage.setItem("cq_login_activities", JSON.stringify(activities));
   },
 
   recordLocalStreak(user, activityType) {

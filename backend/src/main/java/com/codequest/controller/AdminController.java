@@ -43,6 +43,16 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAllStudents());
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<AdminDto.UserDetailResponse>> getAllUsers() {
+        return ResponseEntity.ok(adminService.getAllUsers());
+    }
+
+    @GetMapping("/logins")
+    public ResponseEntity<List<AdminDto.LoginActivityResponse>> getRecentLogins() {
+        return ResponseEntity.ok(adminService.getRecentLogins());
+    }
+
     @PostMapping("/lessons")
     public ResponseEntity<Lesson> createLesson(@RequestBody AdminDto.LessonSaveRequest req) {
         return ResponseEntity.ok(adminService.saveLesson(req));

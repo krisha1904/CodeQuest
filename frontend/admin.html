@@ -23,15 +23,18 @@
             <img src="assets/illustrations/admin-setup.svg" alt="Admin Shield" style="width: 56px; height: 56px;">
             <div>
               <span class="badge bg-danger mb-1">Administrator Portal (ROLE_ADMIN)</span>
-              <h3 class="fw-extrabold mb-1">CodeQuest Academic Management System</h3>
+              <h3 class="fw-extrabold mb-1">CodeQuest Academic Management Center</h3>
               <p class="text-secondary small mb-0" id="admin-welcome-text">
-                Logged in as Administrator • Manage syllabus, question bank, student streaks, and academic doubts.
+                Logged in as Administrator • Monitor user logins, syllabus, quiz question bank, and academic doubts.
               </p>
             </div>
           </div>
           <div class="d-flex gap-2">
-            <a href="dashboard.html" class="btn btn-outline-primary btn-sm">
-              Student Dashboard View
+            <button class="btn btn-outline-primary btn-sm" onclick="loadAdminData()">
+              🔄 Refresh Platform Data
+            </button>
+            <a href="dashboard.html" class="btn btn-outline-secondary btn-sm">
+              Student View
             </a>
             <button class="btn btn-outline-danger btn-sm" onclick="Auth.logout()">
               Sign Out
@@ -42,57 +45,75 @@
 
       <!-- Overview Stats Cards (Populated Dynamically) -->
       <div class="row g-3 mb-4">
-        <div class="col-6 col-md-4 col-xl-2">
+        <div class="col-6 col-md-3 col-xl-3">
           <div class="cq-card p-3 stat-card">
             <div class="stat-icon indigo">👨‍🎓</div>
             <div>
               <div class="stat-value" id="adm-students">0</div>
-              <div class="stat-label">Students</div>
+              <div class="stat-label">Registered Students</div>
             </div>
           </div>
         </div>
-        <div class="col-6 col-md-4 col-xl-2">
+        <div class="col-6 col-md-3 col-xl-3">
+          <div class="cq-card p-3 stat-card" style="border-top: 3px solid #6366f1;">
+            <div class="stat-icon indigo">🔐</div>
+            <div>
+              <div class="stat-value" id="adm-logins">0</div>
+              <div class="stat-label">Total Logins Recorded</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-xl-3">
+          <div class="cq-card p-3 stat-card" style="border-top: 3px solid #10b981;">
+            <div class="stat-icon green">⚡</div>
+            <div>
+              <div class="stat-value" id="adm-active-today">0</div>
+              <div class="stat-label">Active Logins Today</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-xl-3">
           <div class="cq-card p-3 stat-card">
             <div class="stat-icon cyan">📖</div>
             <div>
               <div class="stat-value" id="adm-lessons">12</div>
-              <div class="stat-label">Lessons</div>
+              <div class="stat-label">Course Lessons</div>
             </div>
           </div>
         </div>
-        <div class="col-6 col-md-4 col-xl-2">
+        <div class="col-6 col-md-3 col-xl-3">
           <div class="cq-card p-3 stat-card">
             <div class="stat-icon green">❓</div>
             <div>
               <div class="stat-value" id="adm-questions">50+</div>
-              <div class="stat-label">MCQs</div>
+              <div class="stat-label">Question Bank MCQs</div>
             </div>
           </div>
         </div>
-        <div class="col-6 col-md-4 col-xl-2">
+        <div class="col-6 col-md-3 col-xl-3">
           <div class="cq-card p-3 stat-card">
             <div class="stat-icon amber">🎯</div>
             <div>
               <div class="stat-value" id="adm-attempts">0</div>
-              <div class="stat-label">Submissions</div>
+              <div class="stat-label">Quiz Submissions</div>
             </div>
           </div>
         </div>
-        <div class="col-6 col-md-4 col-xl-2">
+        <div class="col-6 col-md-3 col-xl-3">
           <div class="cq-card p-3 stat-card">
             <div class="stat-icon cyan">📊</div>
             <div>
               <div class="stat-value" id="adm-passrate">0.0%</div>
-              <div class="stat-label">Pass Rate</div>
+              <div class="stat-label">Average Pass Rate</div>
             </div>
           </div>
         </div>
-        <div class="col-6 col-md-4 col-xl-2">
+        <div class="col-6 col-md-3 col-xl-3">
           <div class="cq-card p-3 stat-card">
             <div class="stat-icon amber">🙋</div>
             <div class="text-truncate">
               <div class="stat-value" id="adm-doubts">0</div>
-              <div class="stat-label">Open Doubts</div>
+              <div class="stat-label">Open Student Doubts</div>
             </div>
           </div>
         </div>
@@ -106,8 +127,18 @@
           </button>
         </li>
         <li class="nav-item">
+          <button class="nav-link fw-bold small text-primary" data-bs-toggle="pill" data-bs-target="#tab-logins">
+            🔐 User Logins & Access Audit <span class="badge bg-danger ms-1" id="login-badge-count">Live</span>
+          </button>
+        </li>
+        <li class="nav-item">
           <button class="nav-link fw-bold small" data-bs-toggle="pill" data-bs-target="#tab-students">
             👥 Students & Streaks
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link fw-bold small" data-bs-toggle="pill" data-bs-target="#tab-all-users">
+            👤 All Platform Accounts
           </button>
         </li>
         <li class="nav-item">
@@ -162,13 +193,78 @@
           </div>
         </div>
 
-        <!-- Tab 2: Students Management -->
+        <!-- Tab 2: User Logins & Access Audit (NEW) -->
+        <div class="tab-pane fade" id="tab-logins">
+          <div class="cq-card p-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+              <div>
+                <h5 class="fw-bold mb-0">🔐 Live User Login Audit Stream</h5>
+                <span class="text-muted small">Real-time log of every student and administrator logging into CodeQuest</span>
+              </div>
+              <div class="d-flex gap-2">
+                <input type="text" id="login-search-input" class="form-control form-control-sm" style="max-width: 260px;" placeholder="Filter by username, email or role..." onkeyup="filterLoginsTable()">
+                <button class="btn btn-sm btn-outline-primary" onclick="loadLoginActivities()">
+                  🔄 Refresh Stream
+                </button>
+              </div>
+            </div>
+
+            <!-- Login Summary Pill Bar -->
+            <div class="row g-2 mb-3">
+              <div class="col-sm-4">
+                <div class="p-2 bg-light rounded border text-center">
+                  <div class="small text-muted">Total Recorded Logins</div>
+                  <div class="fw-bold fs-5 text-primary" id="logins-summary-total">0</div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="p-2 bg-light rounded border text-center">
+                  <div class="small text-muted">Logins Today</div>
+                  <div class="fw-bold fs-5 text-success" id="logins-summary-today">0</div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="p-2 bg-light rounded border text-center">
+                  <div class="small text-muted">Unique Users Active</div>
+                  <div class="fw-bold fs-5 text-dark" id="logins-summary-unique">0</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-hover align-middle small mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Login Time</th>
+                    <th>User / Account</th>
+                    <th>Role</th>
+                    <th>Email</th>
+                    <th>Institution / College</th>
+                    <th>Activity Detail</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-logins-tbody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Empty State for 0 Logins -->
+            <div id="no-logins-empty-state" class="cq-empty-state d-none py-4 text-center">
+              <img src="assets/illustrations/admin-setup.svg" alt="No logins yet" style="width: 100px; height: 100px;" class="mb-3">
+              <h5 class="fw-bold">No Logins Recorded Yet</h5>
+              <p class="text-muted small">Login sessions will automatically record here as soon as students or instructors log into the platform.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Students Management -->
         <div class="tab-pane fade" id="tab-students">
           <div class="cq-card p-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div>
                 <h5 class="fw-bold mb-0">Registered Student Directory & Streak Monitor</h5>
-                <span class="text-muted small">Real registered student accounts only</span>
+                <span class="text-muted small">Real registered student accounts with last login timestamps</span>
               </div>
               <input type="text" id="student-search-input" class="form-control form-control-sm" style="max-width: 250px;" placeholder="Search student name..." onkeyup="filterStudentsTable()">
             </div>
@@ -184,7 +280,8 @@
                     <th>Points</th>
                     <th>Current Streak</th>
                     <th>Longest Streak</th>
-                    <th>Status</th>
+                    <th>Last Active / Login</th>
+                    <th>Total Logins</th>
                   </tr>
                 </thead>
                 <tbody id="admin-students-tbody">
@@ -197,12 +294,58 @@
             <div id="no-students-empty-state" class="cq-empty-state d-none">
               <img src="assets/illustrations/empty-leaderboard.svg" alt="No registered students" class="empty-icon" style="width: 130px; height: 130px;">
               <h4 class="empty-title">No Students Registered Yet</h4>
-              <p class="empty-desc">The student database is currently clean and fresh. When learners register for CodeQuest, their real names, points, and streak records will appear in this directory.</p>
+              <p class="empty-desc">The student database is currently clean and fresh. When learners register for CodeQuest, their real names, points, streak records, and login times will appear in this directory.</p>
             </div>
           </div>
         </div>
 
-        <!-- Tab 3: Lesson CMS Editor -->
+        <!-- Tab 4: All Platform Accounts (NEW) -->
+        <div class="tab-pane fade" id="tab-all-users">
+          <div class="cq-card p-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+              <div>
+                <h5 class="fw-bold mb-0">👤 Complete Platform Accounts Directory</h5>
+                <span class="text-muted small">All user accounts registered on this CodeQuest installation (Students & Administrators)</span>
+              </div>
+              <div class="d-flex gap-2">
+                <select id="user-role-filter" class="form-select form-select-sm" style="max-width: 160px;" onchange="filterAllUsersTable()">
+                  <option value="ALL">All Roles</option>
+                  <option value="ROLE_STUDENT">Students Only</option>
+                  <option value="ROLE_ADMIN">Admins Only</option>
+                </select>
+                <input type="text" id="all-users-search-input" class="form-control form-control-sm" style="max-width: 220px;" placeholder="Search name, email, username..." onkeyup="filterAllUsersTable()">
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-hover align-middle small mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Email</th>
+                    <th>College / Institute</th>
+                    <th>Total Points</th>
+                    <th>Account Created</th>
+                    <th>Last Login</th>
+                    <th>Total Logins</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-all-users-tbody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+
+            <div id="no-users-empty-state" class="cq-empty-state d-none py-4 text-center">
+              <img src="assets/illustrations/empty-leaderboard.svg" alt="No users" style="width: 100px; height: 100px;" class="mb-3">
+              <h5 class="fw-bold">No Users Found</h5>
+              <p class="text-muted small">No user accounts matched the selected search or filter criteria.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 5: Lesson CMS Editor -->
         <div class="tab-pane fade" id="tab-lessons">
           <div class="cq-card p-4">
             <h5 class="fw-bold mb-2">📝 Compose / Publish New College Lesson</h5>
@@ -278,7 +421,7 @@
           </div>
         </div>
 
-        <!-- Tab 4: Question Bank Management -->
+        <!-- Tab 6: Question Bank Management -->
         <div class="tab-pane fade" id="tab-questions">
           <div class="cq-card p-4">
             <h5 class="fw-bold mb-3">❓ Question Bank: Add New MCQ</h5>
@@ -341,7 +484,7 @@
           </div>
         </div>
 
-        <!-- Tab 5: Doubt Resolution -->
+        <!-- Tab 7: Doubt Resolution -->
         <div class="tab-pane fade" id="tab-doubts">
           <div class="cq-card p-4">
             <h5 class="fw-bold mb-3">💬 Student Doubt Tickets</h5>
@@ -358,7 +501,7 @@
           </div>
         </div>
 
-        <!-- Tab 6: Feedback Review -->
+        <!-- Tab 8: Feedback Review -->
         <div class="tab-pane fade" id="tab-feedback">
           <div class="cq-card p-4">
             <h5 class="fw-bold mb-3">💌 Student Feedback Inspector</h5>
@@ -399,17 +542,29 @@
     }
 
     let allStudents = [];
+    let allUsers = [];
+    let allLogins = [];
 
     async function loadAdminData() {
       try {
         // Load metrics
         const metrics = await CodeQuestAPI.request("/admin/metrics");
         document.getElementById("adm-students").textContent = metrics.totalStudents || 0;
+        document.getElementById("adm-logins").textContent = metrics.totalLogins || 0;
+        document.getElementById("adm-active-today").textContent = metrics.activeUsersToday || 0;
         document.getElementById("adm-lessons").textContent = metrics.totalLessons || 12;
         document.getElementById("adm-questions").textContent = "50+";
         document.getElementById("adm-attempts").textContent = metrics.totalQuizAttempts || 0;
         document.getElementById("adm-passrate").textContent = `${metrics.averagePassRate || 0}%`;
         document.getElementById("adm-doubts").textContent = metrics.openDoubts || 0;
+
+        // Load logins
+        await loadLoginActivities();
+
+        // Load all users
+        allUsers = await CodeQuestAPI.request("/admin/users");
+        if (!Array.isArray(allUsers)) allUsers = [];
+        renderAllUsersTable(allUsers);
 
         // Load students
         allStudents = await CodeQuestAPI.request("/admin/students");
@@ -425,6 +580,157 @@
       }
     }
 
+    async function loadLoginActivities() {
+      try {
+        allLogins = await CodeQuestAPI.request("/admin/logins");
+        if (!Array.isArray(allLogins)) allLogins = [];
+        renderLoginsTable(allLogins);
+
+        // Update badge and summary
+        document.getElementById("login-badge-count").textContent = `${allLogins.length} events`;
+        document.getElementById("logins-summary-total").textContent = allLogins.length;
+
+        const todayStr = new Date().toISOString().split("T")[0];
+        const todayCount = allLogins.filter(l => (l.timestamp || "").startsWith(todayStr)).length;
+        document.getElementById("logins-summary-today").textContent = todayCount;
+
+        const uniqueUsers = new Set(allLogins.map(l => l.username)).size;
+        document.getElementById("logins-summary-unique").textContent = uniqueUsers;
+      } catch (e) {
+        console.error("Failed to load logins:", e);
+      }
+    }
+
+    function formatDateTime(dtStr) {
+      if (!dtStr) return "Never";
+      try {
+        const d = new Date(dtStr);
+        if (isNaN(d.getTime())) return dtStr;
+        return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) + " " +
+               d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      } catch (e) {
+        return dtStr;
+      }
+    }
+
+    function timeAgo(dtStr) {
+      if (!dtStr) return "";
+      try {
+        const diffMs = Date.now() - new Date(dtStr).getTime();
+        if (isNaN(diffMs)) return "";
+        const diffSec = Math.floor(diffMs / 1000);
+        if (diffSec < 60) return "Just now";
+        const diffMin = Math.floor(diffSec / 60);
+        if (diffMin < 60) return `${diffMin}m ago`;
+        const diffHr = Math.floor(diffMin / 60);
+        if (diffHr < 24) return `${diffHr}h ago`;
+        const diffDays = Math.floor(diffHr / 24);
+        return `${diffDays}d ago`;
+      } catch (e) {
+        return "";
+      }
+    }
+
+    function renderLoginsTable(logins) {
+      const tbody = document.getElementById("admin-logins-tbody");
+      const emptyState = document.getElementById("no-logins-empty-state");
+      tbody.innerHTML = "";
+
+      if (logins.length === 0) {
+        emptyState.classList.remove("d-none");
+        return;
+      }
+
+      emptyState.classList.add("d-none");
+      logins.forEach(l => {
+        const tr = document.createElement("tr");
+        const isAdmin = l.role === "ROLE_ADMIN";
+        const badgeColor = isAdmin ? "bg-danger" : "bg-primary";
+        const roleLabel = isAdmin ? "Administrator" : "Student";
+        const relativeTime = timeAgo(l.timestamp);
+
+        tr.innerHTML = `
+          <td>
+            <div class="fw-semibold font-monospace" style="font-size: 0.85rem;">${formatDateTime(l.timestamp)}</div>
+            ${relativeTime ? `<div class="badge bg-light text-muted border" style="font-size: 0.7rem;">${relativeTime}</div>` : ''}
+          </td>
+          <td>
+            <strong>${l.fullName || l.username}</strong>
+            <div class="text-muted small">@${l.username}</div>
+          </td>
+          <td><span class="badge ${badgeColor}">${roleLabel}</span></td>
+          <td><a href="mailto:${l.email}" class="text-decoration-none text-secondary">${l.email || "—"}</a></td>
+          <td>${l.collegeName || "CodeQuest Academy"}</td>
+          <td>
+            <span class="text-dark small">${l.description || "Logged into CodeQuest"}</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterLoginsTable() {
+      const query = document.getElementById("login-search-input").value.toLowerCase().trim();
+      const filtered = allLogins.filter(l => 
+        (l.fullName || '').toLowerCase().includes(query) ||
+        (l.username || '').toLowerCase().includes(query) ||
+        (l.email || '').toLowerCase().includes(query) ||
+        (l.role || '').toLowerCase().includes(query) ||
+        (l.collegeName || '').toLowerCase().includes(query)
+      );
+      renderLoginsTable(filtered);
+    }
+
+    function renderAllUsersTable(users) {
+      const tbody = document.getElementById("admin-all-users-tbody");
+      const emptyState = document.getElementById("no-users-empty-state");
+      tbody.innerHTML = "";
+
+      if (users.length === 0) {
+        emptyState.classList.remove("d-none");
+        return;
+      }
+
+      emptyState.classList.add("d-none");
+      users.forEach(u => {
+        const tr = document.createElement("tr");
+        const isAdmin = u.role === "ROLE_ADMIN";
+        const badgeColor = isAdmin ? "bg-danger" : "bg-primary";
+        const roleLabel = isAdmin ? "Administrator" : "Student";
+        const lastLoginDisplay = u.lastLoginAt ? `${formatDateTime(u.lastLoginAt)} (${timeAgo(u.lastLoginAt)})` : '<span class="text-muted">Never logged in</span>';
+
+        tr.innerHTML = `
+          <td>
+            <strong>${u.fullName || u.username}</strong>
+            <div class="text-muted small">@${u.username}</div>
+          </td>
+          <td><span class="badge ${badgeColor}">${roleLabel}</span></td>
+          <td>${u.email}</td>
+          <td>${u.collegeName || '—'}</td>
+          <td class="fw-bold text-primary">${(u.totalPoints || 0).toLocaleString()} XP</td>
+          <td class="text-muted small">${formatDateTime(u.createdAt)}</td>
+          <td><span class="small">${lastLoginDisplay}</span></td>
+          <td><span class="badge bg-secondary rounded-pill px-2">${u.loginCount || 0} times</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterAllUsersTable() {
+      const query = document.getElementById("all-users-search-input").value.toLowerCase().trim();
+      const roleFilter = document.getElementById("user-role-filter").value;
+
+      const filtered = allUsers.filter(u => {
+        const matchesRole = roleFilter === "ALL" || u.role === roleFilter;
+        const matchesQuery = (u.fullName || '').toLowerCase().includes(query) ||
+                             (u.username || '').toLowerCase().includes(query) ||
+                             (u.email || '').toLowerCase().includes(query) ||
+                             (u.collegeName || '').toLowerCase().includes(query);
+        return matchesRole && matchesQuery;
+      });
+      renderAllUsersTable(filtered);
+    }
+
     function renderStudentsTable(students) {
       const tbody = document.getElementById("admin-students-tbody");
       const emptyState = document.getElementById("no-students-empty-state");
@@ -438,6 +744,7 @@
       emptyState.classList.add("d-none");
       students.forEach(s => {
         const tr = document.createElement("tr");
+        const lastLogin = s.lastLoginAt ? `${formatDateTime(s.lastLoginAt)} (${timeAgo(s.lastLoginAt)})` : '<span class="text-muted">Never</span>';
         tr.innerHTML = `
           <td><strong>${s.fullName || s.username}</strong></td>
           <td>${s.email}</td>
@@ -446,7 +753,8 @@
           <td class="fw-bold text-primary">${(s.totalPoints || 0).toLocaleString()} XP</td>
           <td class="text-warning fw-bold">🔥 ${s.currentStreak || 0} Days</td>
           <td class="text-secondary fw-semibold">${s.longestStreak || 0} Days</td>
-          <td><span class="badge bg-success">Registered</span></td>
+          <td><span class="small">${lastLogin}</span></td>
+          <td><span class="badge bg-secondary rounded-pill px-2">${s.loginCount || 0} logins</span></td>
         `;
         tbody.appendChild(tr);
       });
