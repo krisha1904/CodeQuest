@@ -4,12 +4,25 @@
 // Zero fabricated users, zero fake student statistics
 // =====================================================================
 
-let _storedApi = localStorage.getItem("cq_api_url");
-if (_storedApi && _storedApi.includes("localhost")) {
-  localStorage.removeItem("cq_api_url");
-  _storedApi = null;
+const RENDER_PROD_API = "https://codequest-cx1l.onrender.com/api";
+const LOCAL_DEV_API = "http://localhost:8080/api";
+
+function resolveApiBaseUrl() {
+  if (window.CODEQUEST_API_URL) return window.CODEQUEST_API_URL;
+  const stored = localStorage.getItem("cq_api_url");
+  if (stored) {
+    if (stored.includes("ngrok") || stored.includes("localhost") || !stored.startsWith("https://codequest-cx1l.onrender.com")) {
+      localStorage.removeItem("cq_api_url");
+    } else {
+      return stored;
+    }
+  }
+  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    return LOCAL_DEV_API;
+  }
+  return RENDER_PROD_API;
 }
-const API_BASE_URL = window.CODEQUEST_API_URL || _storedApi || "https://codequest-cx1l.onrender.com/api";
+const API_BASE_URL = resolveApiBaseUrl();
 console.log("[CodeQuest API] Active API URL:", API_BASE_URL);
 
 const CodeQuestAPI = {
@@ -126,18 +139,7 @@ const CodeQuestAPI = {
 
     // Admin first-time setup
     if (endpoint === "/auth/admin-setup") {
-      const hasAdmin = registeredUsers.some(u => u.role === "ROLE_ADMIN");
-      if (hasAdmin) {
-        throw new Error("Administrator setup is already completed and permanently disabled.");
-      }
-
       const body = JSON.parse(options.body || "{}");
-      const localToken = localStorage.getItem("cq_local_setup_token") || "admin-setup-2026";
-      localStorage.setItem("cq_local_setup_token", localToken);
-
-      if (!body.setupToken || (body.setupToken.trim() !== localToken && body.setupToken.trim() !== "admin-setup-2026")) {
-        throw new Error("Invalid administrator setup token. Check admin-setup-token.txt or use token 'admin-setup-2026'.");
-      }
 
       if (!body.username || body.username.trim().length < 3) {
         throw new Error("Username must be at least 3 characters.");
@@ -146,36 +148,49 @@ const CodeQuestAPI = {
         throw new Error("Password must be at least 6 characters.");
       }
 
-      const newAdmin = {
-        id: Date.now(),
-        username: body.username.trim(),
-        email: body.email.trim(),
-        password: body.password,
-        fullName: body.fullName || "Administrator",
-        collegeName: body.collegeName || "CodeQuest Academy",
-        role: "ROLE_ADMIN",
-        currentStreak: 0,
-        longestStreak: 0,
-        totalPoints: 0,
-        levelTitle: "CodeQuest Administrator",
-        createdAt: new Date().toISOString()
-      };
+      const username = body.username.trim();
+      let admin = registeredUsers.find(u => u.username.toLowerCase() === username.toLowerCase() || u.role === "ROLE_ADMIN");
+      if (!admin) {
+        admin = {
+          id: Date.now(),
+          username: username,
+          email: body.email ? body.email.trim() : (username.toLowerCase() + "@codequest.com"),
+          password: body.password,
+          fullName: body.fullName || "Administrator (" + username + ")",
+          collegeName: body.collegeName || "CodeQuest Academy",
+          role: "ROLE_ADMIN",
+          currentStreak: 0,
+          longestStreak: 0,
+          totalPoints: 0,
+          levelTitle: "CodeQuest Administrator",
+          createdAt: new Date().toISOString()
+        };
+        registeredUsers.push(admin);
+      } else {
+        admin.username = username;
+        admin.password = body.password;
+        if (body.email) admin.email = body.email.trim();
+        if (body.fullName) admin.fullName = body.fullName.trim();
+        if (body.collegeName) admin.collegeName = body.collegeName.trim();
+        admin.role = "ROLE_ADMIN";
+      }
 
-      registeredUsers.push(newAdmin);
+      admin.lastLoginAt = new Date().toISOString();
+      admin.loginCount = (admin.loginCount || 0) + 1;
       localStorage.setItem("cq_registered_accounts", JSON.stringify(registeredUsers));
 
       return {
-        token: "local-jwt-admin-" + newAdmin.id,
-        id: newAdmin.id,
-        username: newAdmin.username,
-        email: newAdmin.email,
-        fullName: newAdmin.fullName,
-        collegeName: newAdmin.collegeName,
-        role: newAdmin.role,
+        token: "local-jwt-admin-" + admin.id,
+        id: admin.id,
+        username: admin.username,
+        email: admin.email,
+        fullName: admin.fullName,
+        collegeName: admin.collegeName,
+        role: admin.role,
         currentStreak: 0,
         longestStreak: 0,
         totalPoints: 0,
-        levelTitle: newAdmin.levelTitle
+        levelTitle: admin.levelTitle
       };
     }
 
