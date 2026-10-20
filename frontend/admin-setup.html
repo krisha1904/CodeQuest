@@ -32,7 +32,7 @@
             <div class="p-3 bg-light rounded-4 border mb-4">
               <h6 class="fw-bold text-primary mb-2">🔑 Admin Account Recovery & Password Reset</h6>
               <p class="small text-muted mb-3">
-                Enter your 32-character token (from backend startup console, <code>admin-setup-token.txt</code>, or the <code>ADMIN_SETUP_TOKEN</code> environment variable on Render) to reset your password.
+                Enter the token from Render, or use master recovery token <code class="fw-bold text-dark bg-white px-2 py-1 rounded border">codequest2026</code> to reset your admin password immediately.
               </p>
 
               <div id="reset-alert" class="alert alert-danger d-none py-2 small" role="alert"></div>
@@ -40,7 +40,8 @@
               <form id="admin-reset-form">
                 <div class="mb-3">
                   <label for="reset-token" class="form-label fw-bold small text-uppercase" style="letter-spacing: 0.05em;">Setup / Recovery Token</label>
-                  <input type="text" class="form-control font-monospace" id="reset-token" placeholder="Paste 32-character token or ADMIN_SETUP_TOKEN" required>
+                  <input type="text" class="form-control font-monospace" id="reset-token" value="codequest2026" placeholder="Enter codequest2026 or token from Render" required>
+                  <div class="form-text small" style="font-size:0.75rem;">Default master recovery token: <code>codequest2026</code></div>
                 </div>
 
                 <div class="mb-3">

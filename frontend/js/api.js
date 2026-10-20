@@ -16,7 +16,7 @@ const CodeQuestAPI = {
   // Check if live backend is online
   async checkBackendHealth() {
     try {
-      const res = await fetch(`${API_BASE_URL}/courses`, { method: "HEAD", signal: AbortSignal.timeout(1200) });
+      const res = await fetch(`${API_BASE_URL}/courses`, { method: "HEAD", signal: AbortSignal.timeout(6000) });
       return res.ok || res.status === 401 || res.status === 403;
     } catch (e) {
       return false;
@@ -36,7 +36,7 @@ const CodeQuestAPI = {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
         headers,
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(60000)
       });
       if (!response.ok) {
         let errMessage = `HTTP error ${response.status}`;

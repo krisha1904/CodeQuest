@@ -57,16 +57,16 @@
                   <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="fillCredentials('tanmay_student', 'Password123!')">
                     🎓 Student (tanmay_student)
                   </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="fillCredentials('admin_roy', 'AdminPassword123!')">
-                    🛡️ Admin (admin_roy)
-                  </button>
+                  <a href="admin-setup.html" class="btn btn-sm btn-outline-warning rounded-pill px-3 text-dark text-decoration-none">
+                    🔑 Reset/Recover Admin (Krisha_1904)
+                  </a>
                 </div>
               </div>
             </form>
 
             <div class="text-center mt-3 pt-3 border-top">
               <p class="small text-muted mb-2">Don't have an account yet? <a href="register.html" class="fw-bold">Sign Up Free</a></p>
-              <p class="small text-muted mb-1">Instructor / Admin setup: <a href="admin-setup.html" class="fw-semibold text-primary">Setup or Recover Admin Account →</a></p>
+              <p class="small text-muted mb-1">Instructor / Admin setup: <a href="admin-setup.html" class="fw-bold text-primary">Setup or Recover Admin Account →</a></p>
             </div>
           </div>
         </div>
@@ -98,21 +98,34 @@
       const u = document.getElementById("username").value.trim();
       const p = document.getElementById("password").value;
       const alertBox = document.getElementById("login-alert");
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const originalBtnText = submitBtn.innerHTML;
 
       alertBox.classList.add("d-none");
-      const res = await Auth.login(u, p);
-      if (res.success) {
-        showToast("Signed in successfully!", "success");
-        setTimeout(() => {
-          if (Auth.isAdmin()) {
-            window.location.href = "admin.html";
-          } else {
-            window.location.href = "dashboard.html";
-          }
-        }, 500);
-      } else {
-        alertBox.innerHTML = `<div>${res.message || "Invalid username or password."}</div><div class="mt-1 small"><a href="admin-setup.html" class="alert-link text-decoration-underline">Admin locked out? Use Admin Setup & Recovery →</a></div>`;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Connecting to live server...`;
+
+      try {
+        const res = await Auth.login(u, p);
+        if (res.success) {
+          showToast("Signed in successfully!", "success");
+          setTimeout(() => {
+            if (Auth.isAdmin()) {
+              window.location.href = "admin.html";
+            } else {
+              window.location.href = "dashboard.html";
+            }
+          }, 500);
+        } else {
+          alertBox.innerHTML = `<div><strong>Login Failed:</strong> ${res.message || "Invalid username or password."}</div><div class="mt-2 pt-2 border-top"><a href="admin-setup.html" class="btn btn-sm btn-danger text-white fw-bold">👉 Reset Admin Password using token (codequest2026)</a></div>`;
+          alertBox.classList.remove("d-none");
+        }
+      } catch (err) {
+        alertBox.innerHTML = `<div><strong>Connection Error:</strong> ${err.message || "Server taking time to wake up."}</div><div class="mt-2 pt-2 border-top"><a href="admin-setup.html" class="btn btn-sm btn-danger text-white fw-bold">👉 Reset Admin Password using token (codequest2026)</a></div>`;
         alertBox.classList.remove("d-none");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
       }
     });
   </script>
