@@ -3,10 +3,10 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/frontend/index.html"
+      "destination": "/frontend"
     },
     {
-      "source": "/((?!backend|database|tools).*)",
+      "source": "/((?!backend|database|tools|frontend).*)",
       "destination": "/frontend/$1"
     }
   ]
